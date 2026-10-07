@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Fashion Store{% endblock %}</title>
+    <title>{% block title %}{{ store.store_name }}{% endblock %}</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Custom JS -->
+    <!-- Dynamic Store Colors injected from the Database -->
+    <style>
+        :root {
+            --primary-color: {{ store.primary_color|default:"#4F46E5" }};
+            --secondary-color: {{ store.secondary_color|default:"#1E293B" }};
+        }
+    </style>
+
     <script src="/static/js/main.js" defer></script>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-    
-    <!-- Navbar will go here -->
-    
-    <main>
+<body class="bg-gray-50 text-gray-900 font-sans flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-[var(--secondary-color)] text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                {% if store.logo %}
+                    <img src="{{ store.logo.url }}" alt="{{ store.store_name }}" class="h-10 object-contain">
+                {% else %}
+                    <span class="font-bold text-xl tracking-tight">{{ store.store_name }}</span>
+                {% endif %}
+            </div>
+            <div class="flex gap-6 text-sm font-medium">
+                <a href="/" class="hover:text-gray-300 transition">Home</a>
+                <a href="#" class="hover:text-gray-300 transition">Shop</a>
+                <a href="#" class="hover:text-gray-300 transition">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
         {% block content %}
-        <!-- Page content will go here -->
         {% endblock %}
     </main>
 
-    <!-- Footer will go here -->
+    <!-- Footer -->
+    <footer class="bg-[var(--secondary-color)] text-white py-8 mt-12 text-center text-sm">
+        <p>&copy; {% now "Y" %} {{ store.store_name }}. All rights reserved.</p>
+        <p class="mt-2 text-gray-400">{{ store.address }}</p>
+    </footer>
 
 </body>
 </html>
