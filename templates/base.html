@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>{% block title %}Fashion Store{% endblock %}</title>
-                
-                    <!-- Tailwind CSS -->
-                        <script src="https://cdn.tailwindcss.com"></script>
-                            
-                                <!-- Custom JS -->
-                                    <script src="/static/js/main.js" defer></script>
-                                    </head>
-                                    <body class="bg-gray-50 text-gray-900 font-sans">
-                                        
-                                            <!-- Navbar will go here -->
-                                                
-                                                    <main>
-                                                            {% block content %}
-                                                                    <!-- Page content will go here -->
-                                                                            {% endblock %}
-                                                                                </main>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fashion Store{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom JS -->
+    <script src="/static/js/main.js" defer></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+    
+    <!-- Navbar will go here -->
+    
+    <main>
+        {% block content %}
+        <!-- Page content will go here -->
+        {% endblock %}
+    </main>
 
-                                                                                    <!-- Footer will go here -->
+    <!-- Footer will go here -->
 
-                                                                                    </body>
-                                                                                    </html>
+</body>
+</html>
