@@ -62,7 +62,7 @@ ROOT_URLCONF = "fashion_store.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], # <--- Add this
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.store_settings', # <--- We'll create this later
+                'core.context_processors.store_settings', # <--- MAKE SURE THIS IS HERE
             ],
         },
     },
