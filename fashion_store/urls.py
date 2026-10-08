@@ -8,6 +8,7 @@ from core.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('', include('orders.urls')), # <--- Add this
     path('shop/', include('products.urls')), # <--- Add this
 ]
 
