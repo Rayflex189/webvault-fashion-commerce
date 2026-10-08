@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - {{ store.store_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+
+    <h1 class="text-3xl font-bold mb-8">Checkout</h1>
+
+    <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {% csrf_token %}
+
+        <!-- Left: Customer Info -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-bold mb-4">Customer Information</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" name="full_name" placeholder="Full Name" required class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)] sm:col-span-2">
+                    <input type="email" name="email" placeholder="Email Address" required class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+                    <input type="text" name="phone" placeholder="Phone Number" required class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+                    <input type="text" name="city" placeholder="City" class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+                    <input type="text" name="state" placeholder="State" class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+                    <textarea name="address" placeholder="Delivery Address (not required for pickup)" rows="3" class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)] sm:col-span-2"></textarea>
+                </div>
+            </div>
+
+            <!-- Delivery Method -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-bold mb-4">Delivery Method</h2>
+                <div class="space-y-3">
+                    {% for method in delivery_methods %}
+                    <label class="flex items-center gap-4 border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[var(--primary-color)] transition">
+                        <input type="radio" name="delivery_method" value="{{ method.id }}" data-fee="{{ method.fee }}" required class="accent-[var(--primary-color)]">
+                        <div class="flex-1">
+                            <p class="font-semibold text-gray-800">{{ method.name }}</p>
+                            {% if method.estimated_days %}
+                                <p class="text-xs text-gray-500">{{ method.estimated_days }}</p>
+                            {% endif %}
+                            {% if method.description %}
+                                <p class="text-xs text-gray-500 mt-1">{{ method.description }}</p>
+                            {% endif %}
+                        </div>
+                        <p class="font-bold text-[var(--primary-color)]">{{ store.currency }} {{ method.fee|floatformat:2 }}</p>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <textarea name="notes" placeholder="Order notes (optional)" rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]"></textarea>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-6">
+                <h2 class="text-lg font-bold mb-4">Order Summary</h2>
+                <div class="space-y-3 text-sm">
+                    {% for item in cart %}
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">{{ item.variant.product.name }} × {{ item.quantity }}</span>
+                        <span class="font-medium">{{ store.currency }} {{ item.line_total|floatformat:2 }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="border-t border-gray-200 mt-4 pt-4 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Subtotal</span>
+                        <span class="font-medium">{{ store.currency }} {{ cart.get_subtotal|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Delivery</span>
+                        <span class="font-medium" id="delivery-fee">Select method</span>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 mt-4 pt-4 flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span class="text-[var(--primary-color)]" id="order-total">{{ store.currency }} {{ cart.get_subtotal|floatformat:2 }}</span>
+                </div>
+                <button type="submit" class="mt-6 w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition">
+                    Place Order
+                </button>
+                <p class="text-xs text-gray-400 text-center mt-3">Payment will be handled securely on the next step.</p>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Live JS to update delivery fee -->
+<script>
+    const currency = "{{ store.currency }}";
+    const subtotal = {{ cart.get_subtotal }};
+    const radios = document.querySelectorAll('input[name="delivery_method"]');
+    const feeEl = document.getElementById('delivery-fee');
+    const totalEl = document.getElementById('order-total');
+
+    radios.forEach(r => r.addEventListener('change', () => {
+        const fee = parseFloat(r.dataset.fee) || 0;
+        feeEl.textContent = `${currency} ${fee.toFixed(2)}`;
+        totalEl.textContent = `${currency} ${(subtotal + fee).toFixed(2)}`;
+    }));
+</script>
+{% endblock %}
