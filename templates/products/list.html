@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop - {{ store.store_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    
+    <!-- Header -->
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Collection</h1>
+        <p class="text-gray-500">Discover the latest styles from {{ store.store_name }}</p>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap justify-center gap-3 mb-10">
+        <a href="{% url 'products:list' %}" class="px-5 py-2 rounded-full text-sm font-medium {% if not current_category %}bg-[var(--primary-color)] text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition">
+            All
+        </a>
+        {% for cat in categories %}
+            <a href="?category={{ cat.slug }}" class="px-5 py-2 rounded-full text-sm font-medium {% if current_category == cat %}bg-[var(--primary-color)] text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition">
+                {{ cat.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- Product Grid -->
+    {% if products %}
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for product in products %}
+        <a href="{% url 'products:detail' product.slug %}" class="group">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 relative aspect-[3/4]">
+                {% if product.primary_image %}
+                    <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                {% else %}
+                    <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+                {% endif %}
+                
+                {% if product.is_featured %}
+                    <span class="absolute top-2 left-2 bg-[var(--primary-color)] text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Featured</span>
+                {% endif %}
+            </div>
+            <h3 class="font-semibold text-gray-800 truncate">{{ product.name }}</h3>
+            <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
+        <p class="text-gray-500 text-lg">No products found in this category.</p>
+        <a href="/shop/" class="text-[var(--primary-color)] font-medium mt-2 inline-block">View all products</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
