@@ -80,9 +80,16 @@
                 </div>
             </div>
 
-            <button class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
-                Add to Cart
-            </button>
+            <form method="POST" action="{% url 'orders:cart_add' product.variants.first.id %}" class="space-y-4">
+    {% csrf_token %}
+    <div class="flex items-center gap-4 mb-4">
+        <label class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Quantity</label>
+        <input type="number" name="quantity" value="1" min="1" class="w-20 border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:border-[var(--primary-color)]">
+    </div>
+    <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
+        Add to Cart
+    </button>
+</form>
         </div>
     </div>
 </div>
