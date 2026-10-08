@@ -28,14 +28,14 @@ DEBUG = True
 # Allow Codespaces and local development
 ALLOWED_HOSTS = ['*']
 
-# Trust Codespaces origins for CSRF
 CSRF_TRUSTED_ORIGINS = [
     'https://*.app.github.dev',
     'https://*.githubpreview.dev',
     'http://localhost:8000',
+    'https://localhost:8000',      # <--- ADD THIS
     'http://127.0.0.1:8000',
+    'https://127.0.0.1:8000',      # <--- ADD THIS
 ]
-
 # Application definition
 
 INSTALLED_APPS = [
