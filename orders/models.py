@@ -25,7 +25,7 @@ class Order(models.Model):
     state = models.CharField(max_length=100, blank=True)
 
     # Delivery
-    delivery_method = models.ForeignKey(DeliveryMethod, on_delete=models.SET_NULL, null=True)
+    delivery_method = models.ForeignKey(DeliveryMethod, on_delete=models.SET_NULL, null=True, related_name='orders')
     delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     # Totals
