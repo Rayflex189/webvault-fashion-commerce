@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - {{ store.store_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12">
+    
+    <a href="{% url 'products:list' %}" class="text-sm text-gray-500 hover:text-[var(--primary-color)] mb-6 inline-block">&larr; Back to Shop</a>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- Product Images -->
+        <div class="space-y-4">
+            <div class="bg-gray-100 rounded-2xl overflow-hidden aspect-[3/4]">
+                {% if product.primary_image %}
+                    <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">No Image Available</div>
+                {% endif %}
+            </div>
+            <!-- Thumbnails -->
+            <div class="grid grid-cols-4 gap-2">
+                {% for img in product.images.all %}
+                    <div class="bg-gray-100 rounded-lg overflow-hidden aspect-square cursor-pointer border-2 border-transparent hover:border-[var(--primary-color)]">
+                        <img src="{{ img.image.url }}" alt="{{ img.alt_text }}" class="w-full h-full object-cover">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+            <p class="text-2xl font-bold text-[var(--primary-color)] mb-6">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+            
+            <p class="text-gray-600 leading-relaxed mb-8">{{ product.description }}</p>
+
+            <!-- Sizes -->
+            {% if product.sizes.exists %}
+            <div class="mb-6">
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Available Sizes</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for size in product.sizes.all %}
+                        <span class="border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium hover:border-[var(--primary-color)] cursor-pointer">{{ size.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Colors -->
+            {% if product.colors.exists %}
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Available Colors</h3>
+                <div class="flex flex-wrap gap-3">
+                    {% for color in product.colors.all %}
+                        <div class="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer hover:border-[var(--primary-color)]">
+                            <span class="w-4 h-4 rounded-full border border-gray-200" style="background-color: {{ color.hex_code|default:'#000000' }};"></span>
+                            <span class="text-sm font-medium">{{ color.name }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Stock Status -->
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Stock Availability</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    {% for variant in product.variants.all %}
+                        <div class="flex justify-between border-b border-gray-100 pb-2">
+                            <span>{{ variant.size.name }} / {{ variant.color.name }}</span>
+                            {% if variant.stock > 0 %}
+                                <span class="text-green-600 font-medium">{{ variant.stock }} in stock</span>
+                            {% else %}
+                                <span class="text-red-500 font-medium">Out of stock</span>
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <p class="text-gray-400 italic">No variants configured yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
