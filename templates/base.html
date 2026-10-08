@@ -30,11 +30,16 @@
                     <span class="font-bold text-xl tracking-tight">{{ store.store_name }}</span>
                 {% endif %}
             </div>
-            <div class="flex gap-6 text-sm font-medium">
-                <a href="/" class="hover:text-gray-300 transition">Home</a>
-                <a href="/shop/" class="hover:text-gray-300 transition">Shop</a>
-                <a href="#" class="hover:text-gray-300 transition">About</a>
-            </div>
+            <div class="flex gap-6 text-sm font-medium items-center">
+    <a href="/" class="hover:text-gray-300 transition">Home</a>
+    <a href="/shop/" class="hover:text-gray-300 transition">Shop</a>
+    <a href="{% url 'orders:cart' %}" class="relative hover:text-gray-300 transition">
+        Cart
+        {% if cart_count > 0 %}
+            <span class="absolute -top-2 -right-4 bg-[var(--primary-color)] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">{{ cart_count }}</span>
+        {% endif %}
+    </a>
+</div>
         </div>
     </nav>
 
