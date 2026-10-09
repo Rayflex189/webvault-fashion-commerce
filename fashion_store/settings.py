@@ -39,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',  # <-- Add Jazzmin here (must be above admin)
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,4 +150,23 @@ MAILERS = {
     "default": {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
+}
+
+# ─────────────────────────────────────────
+# JAZZMIN CONFIGURATION
+# ─────────────────────────────────────────
+JAZZMIN_SETTINGS = {
+    "site_title": "WebVault Admin",
+    "site_header": "WebVault",
+    "site_brand": "WebVault Fashion",
+    "welcome_sign": "Welcome to your store dashboard",
+    "copyright": "WebVault",
+    "search_model": ["auth.User", "orders.Order"],
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Visit Store", "url": "/", "new_window": True},
+    ],
+    "show_ui_builder": True,
+    "changeform_format": "horizontal_tabs",
+    "language_chooser": False,
 }
