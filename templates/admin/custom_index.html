@@ -2,112 +2,154 @@
 {% load i18n %}
 
 {% block content %}
+
+<!-- ─────────── PAGE HEADER ─────────── -->
+<div class="mb-4">
+    <h1 class="h3 mb-1">Business Overview</h1>
+    <p class="text-muted mb-0">Real-time snapshot of your store performance</p>
+</div>
+
+<!-- ─────────── PRIMARY METRICS (4 cards on desktop, 2 on tablet, 1 on mobile) ─────────── -->
+<div class="row g-3 mb-4">
+    <!-- Today's Sales -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Today's Sales</div>
+                    <div class="h3 fw-bold mb-0">{{ currency }} {{ today_sales|floatformat:2 }}</div>
+                </div>
+                <i class="fas fa-chart-line fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Pending Orders</div>
+                    <div class="h3 fw-bold mb-0">{{ pending_orders }}</div>
+                </div>
+                <i class="fas fa-clock fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Products -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Active Products</div>
+                    <div class="h3 fw-bold mb-0">{{ total_products }}</div>
+                </div>
+                <i class="fas fa-tshirt fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Low Stock Alerts</div>
+                    <div class="h3 fw-bold mb-0">{{ low_stock }}</div>
+                </div>
+                <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────── SECONDARY METRICS ─────────── -->
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small text-muted mb-1">Total Orders</div>
+                    <div class="h4 fw-bold mb-0 text-primary">{{ total_orders }}</div>
+                </div>
+                <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                    <i class="fas fa-shopping-bag fa-lg text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small text-muted mb-1">Registered Customers</div>
+                    <div class="h4 fw-bold mb-0 text-secondary">{{ total_customers }}</div>
+                </div>
+                <div class="bg-secondary bg-opacity-10 rounded-circle p-3">
+                    <i class="fas fa-users fa-lg text-secondary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────── RECENT ORDERS ─────────── -->
 <div class="row mb-4">
     <div class="col-12">
-        <h3 class="mb-0">Business Overview</h3>
-        <p class="text-muted">Real-time snapshot of your store performance</p>
-    </div>
-</div>
-
-<!-- Metric Cards -->
-<div class="row">
-    <!-- Today's Sales -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>{{ currency }} {{ today_sales|floatformat:2 }}</h3>
-                <p>Today's Sales</p>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">Recent Orders</h5>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="btn btn-sm btn-outline-primary">
+                    View All <i class="fas fa-arrow-right ms-1"></i>
+                </a>
             </div>
-            <div class="icon"><i class="fas fa-chart-line"></i></div>
-        </div>
-    </div>
-    <!-- Pending Orders -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>{{ pending_orders }}</h3>
-                <p>Pending Orders</p>
-            </div>
-            <div class="icon"><i class="fas fa-clock"></i></div>
-        </div>
-    </div>
-    <!-- Total Products -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>{{ total_products }}</h3>
-                <p>Active Products</p>
-            </div>
-            <div class="icon"><i class="fas fa-tshirt"></i></div>
-        </div>
-    </div>
-    <!-- Low Stock -->
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>{{ low_stock }}</h3>
-                <p>Low Stock Alerts</p>
-            </div>
-            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
-        </div>
-    </div>
-</div>
-
-<!-- Second Row: Customers + Orders -->
-<div class="row mt-3">
-    <div class="col-lg-6 col-12">
-        <div class="small-box bg-primary">
-            <div class="inner">
-                <h3>{{ total_orders }}</h3>
-                <p>Total Orders</p>
-            </div>
-            <div class="icon"><i class="fas fa-shopping-bag"></i></div>
-        </div>
-    </div>
-    <div class="col-lg-6 col-12">
-        <div class="small-box bg-secondary">
-            <div class="inner">
-                <h3>{{ total_customers }}</h3>
-                <p>Registered Customers</p>
-            </div>
-            <div class="icon"><i class="fas fa-users"></i></div>
-        </div>
-    </div>
-</div>
-
-<!-- Recent Orders Table -->
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Recent Orders</h3>
-            </div>
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
                         <tr>
-                            <th>Order #</th>
+                            <th class="ps-3">Order #</th>
                             <th>Customer</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th>Date</th>
+                            <th class="pe-3">Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for order in recent_orders %}
                         <tr>
-                            <td><a href="{% url 'admin:orders_order_change' order.id %}">{{ order.order_number }}</a></td>
-                            <td>{{ order.full_name }}</td>
-                            <td>{{ currency }} {{ order.total|floatformat:2 }}</td>
-                            <td>
-                                <span class="badge badge-{% if order.status == 'paid' %}success{% elif order.status == 'pending' %}warning{% else %}info{% endif %}">
-                                    {{ order.get_status_display }}
-                                </span>
+                            <td class="ps-3">
+                                <a href="{% url 'admin:orders_order_change' order.id %}" class="fw-semibold text-decoration-none">
+                                    {{ order.order_number }}
+                                </a>
                             </td>
-                            <td>{{ order.created_at|date:"M d, Y" }}</td>
+                            <td>{{ order.full_name }}</td>
+                            <td class="fw-semibold">{{ currency }} {{ order.total|floatformat:2 }}</td>
+                            <td>
+                                {% if order.status == 'paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% elif order.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif order.status == 'shipped' %}
+                                    <span class="badge bg-info">Shipped</span>
+                                {% elif order.status == 'delivered' %}
+                                    <span class="badge bg-primary">Delivered</span>
+                                {% elif order.status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ order.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="pe-3 text-muted">{{ order.created_at|date:"M d, Y" }}</td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="5" class="text-center text-muted">No orders yet.</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-2x d-block mb-2 opacity-50"></i>
+                                No orders yet. Orders will appear here as customers place them.
+                            </td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -116,35 +158,79 @@
     </div>
 </div>
 
-<!-- Default Jazzmin App List (models) -->
-<div class="row mt-4">
+<!-- ─────────── MANAGE DATA (Quick Links) ─────────── -->
+<div class="row mb-4">
     <div class="col-12">
-        <h4 class="mb-3">Manage Data</h4>
+        <h5 class="fw-bold mb-3">Manage Data</h5>
     </div>
-    {% for app in app_list %}
-        {% if app.app_label != "auth" %}
-        <div class="col-lg-6">
-            <div class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">{{ app.name }}</h3>
+
+    <!-- Orders -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Orders</h6>
                 </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        {% for model in app.models %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{{ model.admin_url }}">{{ model.name }}</a>
-                            <div>
-                                {% if model.add_url %}
-                                <a href="{{ model.add_url }}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
-                                {% endif %}
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="btn btn-sm btn-primary w-100">
+                    View Orders
+                </a>
             </div>
         </div>
-        {% endif %}
-    {% endfor %}
+    </div>
+
+    <!-- Products -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-info bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-tshirt text-info"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Products</h6>
+                </div>
+                <a href="{% url 'admin:products_product_changelist' %}" class="btn btn-sm btn-info w-100 text-white">
+                    Manage Products
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-warning bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-truck text-warning"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Delivery</h6>
+                </div>
+                <a href="{% url 'admin:delivery_deliverymethod_changelist' %}" class="btn btn-sm btn-warning w-100 text-dark">
+                    Manage Delivery
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Settings -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-store text-success"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Store Settings</h6>
+                </div>
+                <a href="{% url 'admin:core_storesettings_changelist' %}" class="btn btn-sm btn-success w-100">
+                    Store Branding
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}
