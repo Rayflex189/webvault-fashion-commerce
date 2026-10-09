@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════ */
+/* WebVault Admin Dashboard - Custom CSS   */
+/* ═══════════════════════════════════════ */
+
+/* Hide Jazzmin's default dashboard app list (we use custom cards) */
+.dashboard .module,
+.dashboard .app-list {
+    display: none !important;
+}
+
+/* Smooth transitions for metric cards */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Tighter table rows on mobile */
+@media (max-width: 576px) {
+    .table th,
+    .table td {
+        padding: 0.5rem 0.4rem;
+        font-size: 0.85rem;
+    }
+    .h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* Better sidebar spacing */
+.sidebar .nav-sidebar > .nav-item {
+    margin-bottom: 2px;
+}
+
+/* Remove default content padding overflow on mobile */
+@media (max-width: 576px) {
+    .content-wrapper {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+}
+
+/* Make "Recent Orders" table horizontal scroll nicely on mobile */
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
