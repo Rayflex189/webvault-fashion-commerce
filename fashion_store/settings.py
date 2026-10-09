@@ -156,6 +156,8 @@ MAILERS = {
 # JAZZMIN CONFIGURATION
 # ─────────────────────────────────────────
 JAZZMIN_SETTINGS = {
+    "show_ui_builder": False,
+    "custom_css": "css/admin_custom.css",   # <-- Add this line
     "site_title": "WebVault Admin",
     "site_header": "WebVault",
     "site_brand": "WebVault Fashion",
@@ -166,7 +168,17 @@ JAZZMIN_SETTINGS = {
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"name": "Visit Store", "url": "/", "new_window": True},
     ],
-    "show_ui_builder": True,
+    "show_ui_builder": False,   # <-- Change to False
     "changeform_format": "horizontal_tabs",
     "language_chooser": False,
+    "navigation_expanded": True, # <-- Sidebar opens by default
+    "hide_apps": [],              # <-- Apps to hide from sidebar
+    "hide_models": [],            # <-- Models to hide
+    "order_with_respect_to": [    # <-- Order the sidebar
+        "orders",
+        "products",
+        "delivery",
+        "core",
+        "auth",
+    ],
 }
