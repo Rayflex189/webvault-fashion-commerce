@@ -1,0 +1,150 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h3 class="mb-0">Business Overview</h3>
+        <p class="text-muted">Real-time snapshot of your store performance</p>
+    </div>
+</div>
+
+<!-- Metric Cards -->
+<div class="row">
+    <!-- Today's Sales -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>{{ currency }} {{ today_sales|floatformat:2 }}</h3>
+                <p>Today's Sales</p>
+            </div>
+            <div class="icon"><i class="fas fa-chart-line"></i></div>
+        </div>
+    </div>
+    <!-- Pending Orders -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>{{ pending_orders }}</h3>
+                <p>Pending Orders</p>
+            </div>
+            <div class="icon"><i class="fas fa-clock"></i></div>
+        </div>
+    </div>
+    <!-- Total Products -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ total_products }}</h3>
+                <p>Active Products</p>
+            </div>
+            <div class="icon"><i class="fas fa-tshirt"></i></div>
+        </div>
+    </div>
+    <!-- Low Stock -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>{{ low_stock }}</h3>
+                <p>Low Stock Alerts</p>
+            </div>
+            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Row: Customers + Orders -->
+<div class="row mt-3">
+    <div class="col-lg-6 col-12">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h3>{{ total_orders }}</h3>
+                <p>Total Orders</p>
+            </div>
+            <div class="icon"><i class="fas fa-shopping-bag"></i></div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-12">
+        <div class="small-box bg-secondary">
+            <div class="inner">
+                <h3>{{ total_customers }}</h3>
+                <p>Registered Customers</p>
+            </div>
+            <div class="icon"><i class="fas fa-users"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Orders Table -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Orders</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recent_orders %}
+                        <tr>
+                            <td><a href="{% url 'admin:orders_order_change' order.id %}">{{ order.order_number }}</a></td>
+                            <td>{{ order.full_name }}</td>
+                            <td>{{ currency }} {{ order.total|floatformat:2 }}</td>
+                            <td>
+                                <span class="badge badge-{% if order.status == 'paid' %}success{% elif order.status == 'pending' %}warning{% else %}info{% endif %}">
+                                    {{ order.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{ order.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center text-muted">No orders yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Default Jazzmin App List (models) -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h4 class="mb-3">Manage Data</h4>
+    </div>
+    {% for app in app_list %}
+        {% if app.app_label != "auth" %}
+        <div class="col-lg-6">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">{{ app.name }}</h3>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for model in app.models %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ model.admin_url }}">{{ model.name }}</a>
+                            <div>
+                                {% if model.add_url %}
+                                <a href="{{ model.add_url }}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
