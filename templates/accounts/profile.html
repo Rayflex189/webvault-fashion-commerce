@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}My Account{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+
+    <h1 class="text-3xl font-bold mb-8">My Account</h1>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profile Info -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-bold mb-4">Profile Info</h2>
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">First Name</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">Last Name</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">Email</label>
+                        <input type="email" value="{{ user.email }}" disabled class="w-full border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 mt-1 text-gray-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">Phone</label>
+                        <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 uppercase">Default Address</label>
+                        <textarea name="address" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order History -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold">My Orders ({{ order_count }})</h2>
+                    <a href="{% url 'orders:track' %}" class="text-sm text-[var(--primary-color)] font-medium">Track an order</a>
+                </div>
+
+                {% if orders %}
+                    <div class="space-y-3">
+                        {% for order in orders %}
+                        <a href="{% url 'orders:detail' order.order_number %}" class="block border border-gray-100 rounded-xl p-4 hover:border-[var(--primary-color)] transition">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-semibold text-gray-800">{{ order.order_number }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ order.created_at|date:"M d, Y" }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs px-2 py-1 rounded-full
+                                        {% if order.status == 'paid' %}bg-green-100 text-green-700
+                                        {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
+                                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-700
+                                        {% else %}bg-blue-100 text-blue-700{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                    <p class="text-sm font-bold mt-2">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-12 text-gray-400">
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="/shop/" class="text-[var(--primary-color)] font-medium mt-2 inline-block">Start Shopping →</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
