@@ -7,6 +7,53 @@ from delivery.models import DeliveryMethod
 from core.models import StoreSettings
 from .cart import Cart
 from .models import Order, OrderItem
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+
+@login_required
+def my_orders(request):
+    """Logged-in user's order history."""
+    orders = Order.objects.filter(
+        Q(user=request.user) | Q(email=request.user.email)
+    ).order_by('-created_at')
+
+    return render(request, 'orders/my_orders.html', {'orders': orders})
+
+
+def order_detail(request, order_number):
+    """View a single order. Only buyer (logged in) or via tracking can see details."""
+    order = get_object_or_404(Order, order_number=order_number)
+
+    # Security: only allow access if user owns the order OR email matches
+    is_owner = (
+        request.user.is_authenticated and
+        (order.user == request.user or order.email == request.user.email)
+    )
+
+    if not is_owner:
+        # If not logged in, we allow view-only via tracking link
+        # but we don't show sensitive info (only status timeline)
+        return render(request, 'orders/order_public.html', {'order': order})
+
+    return render(request, 'orders/order_detail.html', {'order': order})
+
+
+def track_order(request):
+    """Public order tracking page — customer enters order number + email."""
+    order = None
+    error = ''
+
+    if request.method == 'POST':
+        order_number = request.POST.get('order_number', '').strip()
+        email = request.POST.get('email', '').strip().lower()
+
+        try:
+            order = Order.objects.get(order_number=order_number, email=email)
+        except Order.DoesNotExist:
+            error = 'No order found with that number and email combination.'
+
+    return render(request, 'orders/track.html', {'order': order, 'error': error})
 
 
 def cart_detail(request):
