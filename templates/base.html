@@ -30,17 +30,34 @@
                     <span class="font-bold text-xl tracking-tight">{{ store.store_name }}</span>
                 {% endif %}
             </div>
-            <div class="flex gap-6 text-sm font-medium items-center">
+            <div class="flex gap-5 text-sm font-medium items-center">
     <a href="/" class="hover:text-gray-300 transition">Home</a>
     <a href="/shop/" class="hover:text-gray-300 transition">Shop</a>
+    <a href="{% url 'orders:track' %}" class="hover:text-gray-300 transition hidden sm:inline">Track Order</a>
     <a href="{% url 'orders:cart' %}" class="relative hover:text-gray-300 transition">
         Cart
         {% if cart_count > 0 %}
             <span class="absolute -top-2 -right-4 bg-[var(--primary-color)] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">{{ cart_count }}</span>
         {% endif %}
     </a>
-</div>
+
+    {% if user.is_authenticated %}
+        <div class="relative group">
+            <button class="hover:text-gray-300 transition flex items-center gap-1">
+                {{ user.first_name|default:user.email|truncatechars:12 }}
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 rounded-t-lg">My Account</a>
+                <a href="{% url 'orders:my_orders' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">My Orders</a>
+                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 rounded-b-lg text-red-600">Logout</a>
+            </div>
         </div>
+    {% else %}
+        <a href="{% url 'accounts:login' %}" class="hover:text-gray-300 transition">Login</a>
+        <a href="{% url 'accounts:register' %}" class="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg hover:opacity-90 transition">Sign Up</a>
+    {% endif %}
+</div>
     </nav>
 
     <!-- Main Content -->
