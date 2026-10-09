@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('', include('orders.urls')), # <--- Add this
+    path('account/', include('accounts.urls')),  # <-- Add this
     path('shop/', include('products.urls')), # <--- Add this
 ]
 
