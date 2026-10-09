@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Track Your Order{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-16">
+
+    <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold mb-2">Track Your Order</h1>
+        <p class="text-gray-500">Enter your order number and email to check the status.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <input type="text" name="order_number" placeholder="Order Number (e.g. WV12345678)" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+            <input type="email" name="email" placeholder="Email Address" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
+            <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">Track Order</button>
+        </form>
+
+        {% if error %}
+        <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-sm text-red-700">{{ error }}</p>
+        </div>
+        {% endif %}
+
+        {% if order %}
+        <div class="mt-6 border-t border-gray-100 pt-6">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Order Number</p>
+                    <p class="text-lg font-bold">{{ order.order_number }}</p>
+                </div>
+                <span class="text-xs px-3 py-1 rounded-full
+                    {% if order.status == 'paid' %}bg-green-100 text-green-700
+                    {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
+                    {% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ order.get_status_display }}
+                </span>
+            </div>
+
+            <p class="text-sm text-gray-600">Placed on {{ order.created_at|date:"M d, Y" }}</p>
+            <p class="text-sm text-gray-600 mt-1">{{ order.items.count }} item{{ order.items.count|pluralize }} — Total: {{ order.currency }} {{ order.total|floatformat:2 }}</p>
+
+            <a href="{% url 'orders:detail' order.order_number %}" class="mt-6 block text-center bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">View Full Details</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
