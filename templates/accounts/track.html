@@ -2,48 +2,76 @@
 {% block title %}Track Your Order{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-16">
+<div class="max-w-2xl mx-auto px-4 py-24 md:py-32">
 
-    <div class="text-center mb-10">
-        <h1 class="text-3xl font-bold mb-2">Track Your Order</h1>
-        <p class="text-gray-500">Enter your order number and email to check the status.</p>
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">Track Your Order</h1>
+        <p class="text-lg text-gray-500 font-light">Enter your order number and email to check the status.</p>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <form method="POST" class="space-y-4">
+    <!-- Main Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 md:p-10">
+        
+        <!-- Search Form -->
+        <form method="POST" class="space-y-5">
             {% csrf_token %}
-            <input type="text" name="order_number" placeholder="Order Number (e.g. WV12345678)" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="email" name="email" placeholder="Email Address" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">Track Order</button>
+            
+            <div>
+                <input type="text" name="order_number" placeholder="Order Number (e.g. WV12345678)" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <div>
+                <input type="email" name="email" placeholder="Email Address" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <button type="submit" 
+                    class="w-full bg-[var(--primary-color)] text-white py-3.5 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20 mt-2">
+                Track Order
+            </button>
         </form>
 
+        <!-- Error Message -->
         {% if error %}
-        <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div class="mt-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
             <p class="text-sm text-red-700">{{ error }}</p>
         </div>
         {% endif %}
 
+        <!-- Order Result -->
         {% if order %}
-        <div class="mt-6 border-t border-gray-100 pt-6">
-            <div class="flex justify-between items-start mb-4">
+        <div class="mt-8 border-t border-gray-100 pt-8">
+            
+            <div class="flex justify-between items-start mb-6">
                 <div>
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Order Number</p>
-                    <p class="text-lg font-bold">{{ order.order_number }}</p>
+                    <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Order Number</p>
+                    <p class="font-serif text-2xl font-bold text-gray-900">{{ order.order_number }}</p>
                 </div>
-                <span class="text-xs px-3 py-1 rounded-full
-                    {% if order.status == 'paid' %}bg-green-100 text-green-700
-                    {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
-                    {% else %}bg-blue-100 text-blue-700{% endif %}">
+                <span class="text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider
+                    {% if order.status == 'paid' %}bg-green-50 text-green-700
+                    {% elif order.status == 'pending' %}bg-yellow-50 text-yellow-700
+                    {% else %}bg-blue-50 text-blue-700{% endif %}">
                     {{ order.get_status_display }}
                 </span>
             </div>
 
-            <p class="text-sm text-gray-600">Placed on {{ order.created_at|date:"M d, Y" }}</p>
-            <p class="text-sm text-gray-600 mt-1">{{ order.items.count }} item{{ order.items.count|pluralize }} — Total: {{ order.currency }} {{ order.total|floatformat:2 }}</p>
+            <div class="space-y-2 mb-8">
+                <p class="text-sm text-gray-500 font-light">Placed on <span class="font-medium text-gray-800">{{ order.created_at|date:"M d, Y" }}</span></p>
+                <p class="text-sm text-gray-500 font-light">{{ order.items.count }} item{{ order.items.count|pluralize }} — Total: <span class="font-medium text-gray-800">{{ order.currency }} {{ order.total|floatformat:2 }}</span></p>
+            </div>
 
-            <a href="{% url 'orders:detail' order.order_number %}" class="mt-6 block text-center bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">View Full Details</a>
+            <a href="{% url 'orders:detail' order.order_number %}" 
+               class="block text-center bg-[var(--secondary-color)] text-white py-3.5 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md">
+                View Full Details
+            </a>
         </div>
         {% endif %}
+        
     </div>
 </div>
 {% endblock %}
