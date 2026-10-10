@@ -1,63 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:24px;">
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:32px 16px;">
 
-    <div style="background:{{ store.secondary_color }};padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+    <!-- Header -->
+    <div style="background:{{ store.secondary_color }};padding:40px 24px;text-align:center;border-radius:16px 16px 0 0;">
         {% if store.logo %}
             <img src="{{ store.logo.url }}" alt="{{ store.store_name }}" style="max-height:40px;">
         {% else %}
-            <h1 style="color:white;margin:0;font-size:22px;">{{ store.store_name }}</h1>
+            <h1 style="color:white;margin:0;font-family:Georgia,serif;font-size:28px;font-weight:normal;letter-spacing:-0.5px;">{{ store.store_name }}</h1>
         {% endif %}
     </div>
 
-    <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
-        <h2 style="color:#111827;margin-top:0;">Thank you for your order!</h2>
-        <p style="color:#4b5563;line-height:1.6;">
+    <!-- Body Card -->
+    <div style="background:white;padding:40px 32px;border-radius:0 0 16px 16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <h2 style="color:#111827;font-family:Georgia,serif;font-size:24px;font-weight:normal;margin:0 0 16px 0;">Thank you for your order!</h2>
+        
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 24px 0;">
             Hi {{ order.full_name }}, we've received your order and it's currently pending payment confirmation.
         </p>
 
-        <div style="background:#f9fafb;padding:16px;border-radius:8px;margin:24px 0;">
-            <p style="margin:0;color:#6b7280;font-size:12px;text-transform:uppercase;">Order Number</p>
-            <p style="margin:4px 0 0;color:#111827;font-size:18px;font-weight:bold;">{{ order.order_number }}</p>
+        <!-- Order Number Box -->
+        <div style="background:#F8FAFC;padding:24px;border-radius:12px;border:1px solid #F1F5F9;margin:0 0 32px 0;">
+            <p style="margin:0 0 4px 0;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Order Number</p>
+            <p style="margin:0;color:#111827;font-size:18px;font-weight:bold;">{{ order.order_number }}</p>
         </div>
 
+        <!-- Order Items Table -->
         <table style="width:100%;border-collapse:collapse;margin-top:16px;">
             {% for item in order.items.all %}
             <tr>
-                <td style="padding:8px 0;color:#374151;">{{ item.product_name }} ({{ item.size_name }}/{{ item.color_name }}) × {{ item.quantity }}</td>
-                <td style="padding:8px 0;text-align:right;color:#111827;font-weight:bold;">{{ order.currency }} {{ item.line_total|floatformat:2 }}</td>
+                <td style="padding:16px 0;border-bottom:1px solid #F1F5F9;color:#374151;font-size:15px;">
+                    {{ item.product_name }} <span style="color:#6B7280;font-size:13px;">({{ item.size_name }}/{{ item.color_name }})</span> × {{ item.quantity }}
+                </td>
+                <td style="padding:16px 0;border-bottom:1px solid #F1F5F9;text-align:right;color:#111827;font-weight:600;font-size:15px;">
+                    {{ order.currency }} {{ item.line_total|floatformat:2 }}
+                </td>
             </tr>
             {% endfor %}
+            
             <tr>
-                <td style="padding:8px 0;color:#6b7280;">Subtotal</td>
-                <td style="padding:8px 0;text-align:right;">{{ order.currency }} {{ order.subtotal|floatformat:2 }}</td>
+                <td style="padding:16px 0;color:#6B7280;font-size:14px;">Subtotal</td>
+                <td style="padding:16px 0;text-align:right;color:#374151;font-size:14px;">{{ order.currency }} {{ order.subtotal|floatformat:2 }}</td>
             </tr>
+            
             <tr>
-                <td style="padding:8px 0;color:#6b7280;">Delivery</td>
-                <td style="padding:8px 0;text-align:right;">{{ order.currency }} {{ order.delivery_fee|floatformat:2 }}</td>
+                <td style="padding:16px 0;color:#6B7280;font-size:14px;border-bottom:1px solid #F1F5F9;">Delivery</td>
+                <td style="padding:16px 0;text-align:right;color:#374151;font-size:14px;border-bottom:1px solid #F1F5F9;">{{ order.currency }} {{ order.delivery_fee|floatformat:2 }}</td>
             </tr>
-            <tr style="border-top:2px solid #e5e7eb;">
-                <td style="padding:12px 0;font-weight:bold;color:#111827;">Total</td>
-                <td style="padding:12px 0;text-align:right;font-weight:bold;color:{{ store.primary_color }};">{{ order.currency }} {{ order.total|floatformat:2 }}</td>
+            
+            <tr>
+                <td style="padding:20px 0;font-weight:bold;color:#111827;font-size:16px;">Total</td>
+                <td style="padding:20px 0;text-align:right;font-weight:bold;color:{{ store.primary_color }};font-size:18px;">{{ order.currency }} {{ order.total|floatformat:2 }}</td>
             </tr>
         </table>
 
+        <!-- Next Steps (Conditional) -->
         {% if order.status == 'pending' %}
-        <p style="margin-top:24px;color:#4b5563;">
-            <strong>Next step:</strong> Complete your payment to finalize this order.
-        </p>
+        <div style="margin-top:32px;padding:16px;background:#F8FAFC;border-radius:12px;border-left:4px solid {{ store.primary_color }};">
+            <p style="margin:0;color:#4B5563;font-size:15px;line-height:1.6;">
+                <strong style="color:#111827;">Next step:</strong> Complete your payment to finalize this order.
+            </p>
+        </div>
         {% endif %}
 
-        <p style="margin-top:32px;color:#9ca3af;font-size:12px;text-align:center;">
+        <!-- Footer -->
+        <p style="margin:40px 0 0 0;color:#9CA3AF;font-size:12px;text-align:center;letter-spacing:0.5px;">
             Questions? Contact us at {{ store.contact_email }}
         </p>
+        
     </div>
 
-    <p style="text-align:center;color:#9ca3af;font-size:12px;margin-top:16px;">
+    <!-- Outer Footer -->
+    <p style="text-align:center;color:#9CA3AF;font-size:12px;margin-top:24px;">
         &copy; {% now "Y" %} {{ store.store_name }}
     </p>
+    
 </div>
 </body>
 </html>
