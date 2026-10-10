@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:24px;">
+
+    <div style="background:#10b981;padding:32px;text-align:center;border-radius:12px 12px 0 0;">
+        <div style="color:white;font-size:40px;margin-bottom:8px;">✓</div>
+        <h1 style="color:white;margin:0;font-size:24px;">Payment Confirmed</h1>
+    </div>
+
+    <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
+        <p style="color:#4b5563;line-height:1.6;">
+            Hi {{ order.full_name }}, we've received your payment. Your order is now being processed.
+        </p>
+
+        <div style="background:#f9fafb;padding:16px;border-radius:8px;margin:24px 0;">
+            <p style="margin:0;color:#6b7280;font-size:12px;text-transform:uppercase;">Order Number</p>
+            <p style="margin:4px 0 0;color:#111827;font-size:18px;font-weight:bold;">{{ order.order_number }}</p>
+            <p style="margin:12px 0 0;color:#6b7280;font-size:12px;text-transform:uppercase;">Amount Paid</p>
+            <p style="margin:4px 0 0;color:#10b981;font-size:18px;font-weight:bold;">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
+        </div>
+
+        <p style="color:#4b5563;">
+            You'll receive another email when your order ships.
+        </p>
+
+        <p style="margin-top:32px;color:#9ca3af;font-size:12px;text-align:center;">
+            Questions? Contact us at {{ store.contact_email }}
+        </p>
+    </div>
+</div>
+</body>
+</html>
