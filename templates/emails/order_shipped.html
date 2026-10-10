@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:24px;">
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:32px 16px;">
 
-    <div style="background:{{ store.secondary_color }};padding:24px;text-align:center;border-radius:12px 12px 0 0;">
-        <h1 style="color:white;margin:0;font-size:22px;">Your order is on the way!</h1>
+    <!-- Header -->
+    <div style="background:{{ store.secondary_color }};padding:40px 24px;text-align:center;border-radius:16px 16px 0 0;">
+        <h1 style="color:white;margin:0;font-family:Georgia,serif;font-size:26px;font-weight:normal;letter-spacing:-0.5px;">Your order is on the way</h1>
     </div>
 
-    <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
-        <p style="color:#4b5563;line-height:1.6;">
-            Great news! Order <strong>{{ order.order_number }}</strong> has been shipped.
+    <!-- Body Card -->
+    <div style="background:white;padding:40px 32px;border-radius:0 0 16px 16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 24px 0;">
+            Great news! Order <strong style="color:#111827;">{{ order.order_number }}</strong> has been shipped.
         </p>
 
-        <div style="background:#f9fafb;padding:16px;border-radius:8px;margin:24px 0;">
-            <p style="margin:0;color:#6b7280;font-size:12px;text-transform:uppercase;">Delivery Method</p>
-            <p style="margin:4px 0 0;color:#111827;font-weight:bold;">{{ order.delivery_method.name }}</p>
+        <!-- Delivery Info Box -->
+        <div style="background:#F8FAFC;padding:28px;border-radius:12px;border:1px solid #F1F5F9;margin:0 0 32px 0;">
+            
+            <p style="margin:0 0 4px 0;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Delivery Method</p>
+            <p style="margin:0;color:#111827;font-size:16px;font-weight:600;">{{ order.delivery_method.name }}</p>
 
             {% if order.address %}
-            <p style="margin:12px 0 0;color:#6b7280;font-size:12px;text-transform:uppercase;">Delivering to</p>
-            <p style="margin:4px 0 0;color:#111827;">{{ order.address }}, {{ order.city }}, {{ order.state }}</p>
+            <p style="margin:24px 0 4px 0;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Delivering To</p>
+            <p style="margin:0;color:#111827;font-size:15px;line-height:1.5;">{{ order.address }}, {{ order.city }}, {{ order.state }}</p>
             {% endif %}
+            
         </div>
 
-        <p style="margin-top:32px;color:#9ca3af;font-size:12px;text-align:center;">
+        <!-- Footer -->
+        <p style="margin:40px 0 0 0;color:#9CA3AF;font-size:12px;text-align:center;letter-spacing:0.5px;">
             Contact us at {{ store.contact_email }}
         </p>
+        
     </div>
 </div>
 </body>
