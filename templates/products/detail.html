@@ -3,35 +3,46 @@
 {% block title %}{{ product.name }} - {{ store.store_name }}{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 py-12">
-    
+<div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+
     <a href="{% url 'products:list' %}" class="text-sm text-gray-500 hover:text-[var(--primary-color)] mb-6 inline-block">&larr; Back to Shop</a>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <!-- Product Images -->
-        <div class="space-y-4">
-            <div class="bg-gray-100 rounded-2xl overflow-hidden aspect-[3/4]">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+
+        <!-- ═══════════ IMAGE GALLERY ═══════════ -->
+        <div>
+            <div class="bg-gray-100 rounded-2xl overflow-hidden aspect-[3/4] mb-3">
                 {% if product.primary_image %}
-                    <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                    <img id="main-image" src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover transition duration-300">
                 {% else %}
                     <div class="w-full h-full flex items-center justify-center text-gray-400">No Image Available</div>
                 {% endif %}
             </div>
-            <!-- Thumbnails -->
+
+            {% if product.images.count > 1 %}
             <div class="grid grid-cols-4 gap-2">
                 {% for img in product.images.all %}
-                    <div class="bg-gray-100 rounded-lg overflow-hidden aspect-square cursor-pointer border-2 border-transparent hover:border-[var(--primary-color)]">
-                        <img src="{{ img.image.url }}" alt="{{ img.alt_text }}" class="w-full h-full object-cover">
-                    </div>
+                    <button type="button"
+                            onclick="swapImage('{{ img.image.url }}')"
+                            class="thumbnail bg-gray-100 rounded-lg overflow-hidden aspect-square cursor-pointer border-2 border-transparent hover:border-[var(--primary-color)] transition {% if forloop.first %}border-[var(--primary-color)]{% endif %}"
+                            data-src="{{ img.image.url }}">
+                        <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}" class="w-full h-full object-cover">
+                    </button>
                 {% endfor %}
             </div>
+            {% endif %}
         </div>
 
-        <!-- Product Details -->
+        <!-- ═══════════ PRODUCT INFO ═══════════ -->
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+
+            {% if product.category %}
+            <p class="text-sm text-gray-500 mb-3">{{ product.category.name }}</p>
+            {% endif %}
+
             <p class="text-2xl font-bold text-[var(--primary-color)] mb-6">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
-            
+
             <p class="text-gray-600 leading-relaxed mb-8">{{ product.description }}</p>
 
             <!-- Sizes -->
@@ -48,7 +59,7 @@
 
             <!-- Colors -->
             {% if product.colors.exists %}
-            <div class="mb-8">
+            <div class="mb-6">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Available Colors</h3>
                 <div class="flex flex-wrap gap-3">
                     {% for color in product.colors.all %}
@@ -61,7 +72,7 @@
             </div>
             {% endif %}
 
-            <!-- Stock Status -->
+            <!-- Stock -->
             <div class="mb-8">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Stock Availability</h3>
                 <div class="space-y-2 text-sm text-gray-600">
@@ -80,17 +91,34 @@
                 </div>
             </div>
 
+            <!-- Add to cart -->
             <form method="POST" action="{% url 'orders:cart_add' product.variants.first.id %}" class="space-y-4">
-    {% csrf_token %}
-    <div class="flex items-center gap-4 mb-4">
-        <label class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Quantity</label>
-        <input type="number" name="quantity" value="1" min="1" class="w-20 border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:border-[var(--primary-color)]">
-    </div>
-    <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
-        Add to Cart
-    </button>
-</form>
+                {% csrf_token %}
+                <div class="flex items-center gap-4">
+                    <label class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Qty</label>
+                    <input type="number" name="quantity" value="1" min="1" class="w-20 border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:border-[var(--primary-color)]">
+                </div>
+                <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
+                    Add to Cart
+                </button>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- ═══════════ IMAGE SWAP JS ═══════════ -->
+<script>
+    function swapImage(src) {
+        const mainImg = document.getElementById('main-image');
+        if (mainImg) mainImg.src = src;
+
+        // Update thumbnail border
+        document.querySelectorAll('.thumbnail').forEach(t => {
+            t.classList.remove('border-[var(--primary-color)]');
+            t.classList.add('border-transparent');
+        });
+        event.currentTarget.classList.remove('border-transparent');
+        event.currentTarget.classList.add('border-[var(--primary-color)]');
+    }
+</script>
 {% endblock %}
