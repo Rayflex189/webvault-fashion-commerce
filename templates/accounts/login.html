@@ -2,20 +2,46 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-16">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <h1 class="text-2xl font-bold mb-2">Welcome Back</h1>
-        <p class="text-sm text-gray-500 mb-6">Log in to track your orders and checkout faster.</p>
+<div class="max-w-md mx-auto px-4 py-24 md:py-32">
+    <!-- Elegant Card Container -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 md:p-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="font-serif text-3xl font-bold text-gray-900 mb-3">Welcome Back</h1>
+            <p class="text-sm text-gray-500 font-light leading-relaxed">Log in to track your orders and checkout faster.</p>
+        </div>
 
-        <form method="POST" class="space-y-4">
+        <!-- Form -->
+        <form method="POST" class="space-y-5">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
-            <input type="email" name="email" placeholder="Email Address" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="password" name="password" placeholder="Password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">Log In</button>
+            
+            <!-- Email Input -->
+            <div>
+                <input type="email" name="email" placeholder="Email Address" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Password Input -->
+            <div>
+                <input type="password" name="password" placeholder="Password" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full bg-[var(--primary-color)] text-white py-3.5 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20 mt-2">
+                Log In
+            </button>
         </form>
 
-        <p class="text-sm text-center mt-6 text-gray-500">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-[var(--primary-color)] font-semibold">Sign up</a></p>
+        <!-- Footer Link -->
+        <p class="text-sm text-center mt-8 text-gray-500 font-light">
+            Don't have an account? 
+            <a href="{% url 'accounts:register' %}" class="text-[var(--primary-color)] font-medium hover:underline transition duration-200">Sign up</a>
+        </p>
+        
     </div>
 </div>
 {% endblock %}
