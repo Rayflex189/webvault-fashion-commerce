@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:24px;">
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:32px 16px;">
 
-    <div style="background:#10b981;padding:32px;text-align:center;border-radius:12px 12px 0 0;">
-        <div style="color:white;font-size:40px;margin-bottom:8px;">🎉</div>
-        <h1 style="color:white;margin:0;font-size:24px;">Delivered!</h1>
+    <!-- Header -->
+    <div style="background:{{ store.primary_color }};padding:40px 24px;text-align:center;border-radius:16px 16px 0 0;">
+        <h1 style="color:white;margin:0;font-family:Georgia,serif;font-size:28px;font-weight:normal;letter-spacing:-0.5px;">Delivered</h1>
     </div>
 
-    <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
-        <p style="color:#4b5563;line-height:1.6;">
-            Your order <strong>{{ order.order_number }}</strong> has been delivered. We hope you love it!
+    <!-- Body Card -->
+    <div style="background:white;padding:40px 32px;border-radius:0 0 16px 16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 20px 0;">
+            Your order <strong style="color:#111827;">{{ order.order_number }}</strong> has been delivered. We hope you love it!
         </p>
 
-        <p style="color:#4b5563;">
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 32px 0;">
             If you have a moment, we'd love to hear your feedback.
         </p>
 
-        <p style="margin-top:32px;color:#9ca3af;font-size:12px;text-align:center;">
+        <!-- Footer -->
+        <p style="margin:40px 0 0 0;color:#9CA3AF;font-size:12px;text-align:center;letter-spacing:0.5px;">
             Thank you for shopping with {{ store.store_name }}
         </p>
+        
     </div>
 </div>
 </body>
