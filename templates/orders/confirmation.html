@@ -3,39 +3,71 @@
 {% block title %}Order Confirmed - {{ store.store_name }}{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 py-16">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
 
-    <div class="text-center mb-10">
-        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">✓</div>
-        <h1 class="text-3xl font-bold text-gray-900">Thank you for your order!</h1>
-        <p class="text-gray-500 mt-2">Your order has been placed. We'll notify you once payment is confirmed.</p>
+    <!-- Success Header -->
+    <div class="text-center mb-12">
+        <div class="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">Thank you for your order!</h1>
+        <p class="text-lg text-gray-500 font-light max-w-xl mx-auto">Your order has been placed. We'll notify you once payment is confirmed.</p>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div class="flex justify-between items-start border-b border-gray-100 pb-4 mb-4">
+    <!-- Order Details Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 md:p-10">
+        
+        <!-- Order Header -->
+        <div class="flex justify-between items-start border-b border-gray-50 pb-6 mb-6">
             <div>
-                <p class="text-xs text-gray-500 uppercase font-semibold">Order Number</p>
-                <p class="text-lg font-bold text-gray-900">{{ order.order_number }}</p>
+                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Order Number</p>
+                <p class="font-serif text-2xl font-bold text-gray-900">{{ order.order_number }}</p>
             </div>
-            <span class="text-xs font-semibold px-3 py-1 rounded-full {% if order.status == 'paid' %}bg-green-100 text-green-700{% else %}bg-yellow-100 text-yellow-700{% endif %} uppercase">{{ order.get_status_display }}</span>
+            <span class="text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider 
+                {% if order.status == 'paid' %}bg-emerald-50 text-emerald-700{% else %}bg-amber-50 text-amber-700{% endif %}">
+                {{ order.get_status_display }}
+            </span>
         </div>
 
-        <div class="space-y-3">
+        <!-- Items List -->
+        <div class="space-y-4 mb-6">
             {% for item in order.items.all %}
-            <div class="flex justify-between text-sm">
-                <span class="text-gray-600">{{ item.product_name }} ({{ item.size_name }} / {{ item.color_name }}) × {{ item.quantity }}</span>
-                <span class="font-medium">{{ order.currency }} {{ item.line_total|floatformat:2 }}</span>
+            <div class="flex justify-between items-start text-sm gap-4">
+                <span class="text-gray-600 font-light leading-relaxed">
+                    {{ item.product_name }} 
+                    <span class="text-xs text-gray-400">({{ item.size_name }} / {{ item.color_name }})</span> 
+                    × {{ item.quantity }}
+                </span>
+                <span class="font-medium text-gray-900 shrink-0">{{ order.currency }} {{ item.line_total|floatformat:2 }}</span>
             </div>
             {% endfor %}
         </div>
 
-        <div class="border-t border-gray-100 mt-4 pt-4 space-y-2 text-sm">
-            <div class="flex justify-between"><span class="text-gray-600">Subtotal</span><span>{{ order.currency }} {{ order.subtotal|floatformat:2 }}</span></div>
-            <div class="flex justify-between"><span class="text-gray-600">Delivery ({{ order.delivery_method.name }})</span><span>{{ order.currency }} {{ order.delivery_fee|floatformat:2 }}</span></div>
-            <div class="flex justify-between text-lg font-bold border-t border-gray-100 pt-3 mt-2"><span>Total</span><span class="text-[var(--primary-color)]">{{ order.currency }} {{ order.total|floatformat:2 }}</span></div>
+        <!-- Totals Section -->
+        <div class="border-t border-gray-50 pt-6 space-y-3 text-sm">
+            <div class="flex justify-between">
+                <span class="text-gray-500 font-light">Subtotal</span>
+                <span class="font-medium text-gray-900">{{ order.currency }} {{ order.subtotal|floatformat:2 }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-gray-500 font-light">Delivery ({{ order.delivery_method.name }})</span>
+                <span class="font-medium text-gray-900">{{ order.currency }} {{ order.delivery_fee|floatformat:2 }}</span>
+            </div>
+            
+            <!-- Grand Total -->
+            <div class="flex justify-between items-end border-t border-gray-100 pt-5 mt-5">
+                <span class="font-serif text-lg font-bold text-gray-900">Total</span>
+                <span class="font-serif text-2xl font-bold text-[var(--primary-color)]">{{ order.currency }} {{ order.total|floatformat:2 }}</span>
+            </div>
         </div>
     </div>
 
-    <a href="/shop/" class="block mt-8 text-center bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold hover:opacity-90 transition">Continue Shopping</a>
+    <!-- CTA Button -->
+    <a href="/shop/" class="block mt-10 text-center bg-[var(--primary-color)] text-white py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20">
+        Continue Shopping
+    </a>
+
 </div>
 {% endblock %}
