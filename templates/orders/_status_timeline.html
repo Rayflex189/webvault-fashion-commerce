@@ -1,0 +1,67 @@
+{% comment %}
+Status timeline component.
+Usage: {% include 'orders/_status_timeline.html' with order=order %}
+{% endcomment %}
+
+{% with status=order.status %}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+    <h2 class="font-bold mb-6">Order Progress</h2>
+
+    {% if status == 'cancelled' %}
+        <div class="flex items-center gap-3 text-red-600">
+            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-xl">✕</div>
+            <div>
+                <p class="font-semibold">Order Cancelled</p>
+                <p class="text-xs text-gray-500">This order has been cancelled.</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="flex items-center justify-between relative">
+            <!-- Progress line behind dots -->
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 z-0"></div>
+
+            <!-- Steps -->
+            {% with current_step=status %}
+            <!-- Step 1: Placed (always complete) -->
+            <div class="relative z-10 flex flex-col items-center flex-1">
+                <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
+                <p class="text-xs font-medium text-gray-700 mt-2">Placed</p>
+            </div>
+
+            <!-- Step 2: Paid -->
+            <div class="relative z-10 flex flex-col items-center flex-1">
+                {% if current_step == 'pending' %}
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">2</div>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Paid</p>
+                {% else %}
+                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
+                    <p class="text-xs font-medium text-gray-700 mt-2">Paid</p>
+                {% endif %}
+            </div>
+
+            <!-- Step 3: Shipped -->
+            <div class="relative z-10 flex flex-col items-center flex-1">
+                {% if current_step == 'pending' or current_step == 'paid' %}
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">3</div>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Shipped</p>
+                {% else %}
+                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
+                    <p class="text-xs font-medium text-gray-700 mt-2">Shipped</p>
+                {% endif %}
+            </div>
+
+            <!-- Step 4: Delivered -->
+            <div class="relative z-10 flex flex-col items-center flex-1">
+                {% if current_step == 'delivered' %}
+                    <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">✓</div>
+                    <p class="text-xs font-medium text-green-700 mt-2">Delivered</p>
+                {% else %}
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">4</div>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Delivered</p>
+                {% endif %}
+            </div>
+            {% endwith %}
+        </div>
+    {% endif %}
+</div>
+{% endwith %}
