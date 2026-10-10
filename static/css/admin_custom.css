@@ -1,218 +1,49 @@
 /* ═══════════════════════════════════════ */
 /* WebVault Admin Dashboard - Custom CSS   */
-/* Véloire Design System                   */
 /* ═══════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
-
-/* ─────────── ROOT VARIABLES ─────────── */
-:root {
-    --primary-color: #2563EB;
-    --secondary-color: #003B66;
-    --bg-light: #F8FAFC;
-    --text-main: #111827;
-    --text-muted: #6B7280;
-    --border-light: #F1F5F9;
-    --shadow-soft: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
-    --shadow-hover: 0 25px 30px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-}
-
-/* ─────────── GLOBAL TYPOGRAPHY ─────────── */
-body, .content-wrapper, .main-sidebar, .main-header {
-    font-family: 'Inter', sans-serif !important;
-    color: var(--text-main);
-    background-color: var(--bg-light) !important;
-}
-
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Playfair Display', serif !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.025em;
-    color: var(--text-main);
-}
-
-.text-muted, .text-secondary {
-    color: var(--text-muted) !important;
-    font-weight: 400;
-}
-
-/* ─────────── HIDE DEFAULT JAZZMIN LISTS ─────────── */
-/* We use custom cards instead */
+/* Hide Jazzmin's default dashboard app list (we use custom cards) */
 .dashboard .module,
 .dashboard .app-list {
     display: none !important;
 }
 
-/* ─────────── CARDS (METRICS & SECTIONS) ─────────── */
+/* Smooth transitions for metric cards */
 .card {
-    background: #ffffff;
-    border: 1px solid var(--border-light);
-    border-radius: 1.5rem !important; /* rounded-3xl */
-    box-shadow: var(--shadow-soft) !important;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
 }
 
-.card-header {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid var(--border-light) !important;
-    padding: 1.5rem 2rem;
-}
-
-.card-body {
-    padding: 1.5rem 2rem;
-}
-
-/* ─────────── BUTTONS ─────────── */
-.btn {
-    border-radius: 9999px !important; /* Pill shape */
-    font-weight: 500 !important;
-    font-size: 0.75rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.6rem 1.5rem;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.btn-primary {
-    background-color: var(--primary-color) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
-}
-.btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-.btn-outline-primary {
-    border: 1px solid var(--primary-color) !important;
-    color: var(--primary-color) !important;
-    background: transparent;
-}
-.btn-outline-primary:hover {
-    background-color: var(--primary-color) !important;
-    color: #ffffff !important;
-}
-
-/* ─────────── TABLES (RECENT ORDERS) ─────────── */
-.table {
-    margin-bottom: 0;
-    color: var(--text-main);
-}
-
-.table thead th {
-    border-top: none;
-    border-bottom: 1px solid var(--border-light);
-    background-color: var(--bg-light);
-    font-family: 'Inter', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    padding: 1.25rem 1.5rem;
-}
-
-.table tbody td {
-    border-bottom: 1px solid var(--border-light);
-    padding: 1.25rem 1.5rem;
-    vertical-align: middle;
-    font-size: 0.875rem;
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(248, 250, 252, 0.5);
-}
-
-/* ─────────── BADGES (STATUS) ─────────── */
-.badge {
-    border-radius: 9999px !important;
-    padding: 0.4em 1em;
-    font-weight: 600;
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.badge-success, .badge.bg-success { background-color: #ECFDF5 !important; color: #047857 !important; }
-.badge-warning, .badge.bg-warning { background-color: #FFFBEB !important; color: #B45309 !important; }
-.badge-info, .badge.bg-info       { background-color: #EFF6FF !important; color: #1D4ED8 !important; }
-.badge-primary, .badge.bg-primary { background-color: #EEF2FF !important; color: #4338CA !important; }
-.badge-danger, .badge.bg-danger   { background-color: #FEF2F2 !important; color: #B91C1C !important; }
-.badge-secondary, .badge.bg-secondary { background-color: #F3F4F6 !important; color: #374151 !important; }
-
-/* ─────────── SIDEBAR ─────────── */
-.main-sidebar {
-    background-color: var(--secondary-color) !important;
-}
-
-.sidebar .nav-sidebar > .nav-item {
-    margin-bottom: 6px;
-}
-
-.sidebar .nav-link {
-    border-radius: 0.75rem;
-    margin: 0 0.5rem;
-    padding: 0.75rem 1rem;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.sidebar .nav-link:hover,
-.sidebar .nav-link.active {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
-}
-
-/* ─────────── CONTENT WRAPPER SPACING ─────────── */
-.content-wrapper {
-    padding: 2rem 2.5rem !important;
-}
-
-/* ─────────── MOBILE RESPONSIVENESS ─────────── */
-@media (max-width: 768px) {
-    .content-wrapper {
-        padding: 1.25rem !important;
-    }
-    
+/* Tighter table rows on mobile */
+@media (max-width: 576px) {
     .table th,
     .table td {
-        padding: 0.75rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.5rem 0.4rem;
+        font-size: 0.85rem;
     }
-    
-    .h3, .font-serif {
-        font-size: 1.75rem !important;
-    }
-
-    .card-body {
-        padding: 1.25rem;
+    .h3 {
+        font-size: 1.4rem;
     }
 }
 
-/* ─────────── SCROLLBAR & OVERFLOW ─────────── */
+/* Better sidebar spacing */
+.sidebar .nav-sidebar > .nav-item {
+    margin-bottom: 2px;
+}
+
+/* Remove default content padding overflow on mobile */
+@media (max-width: 576px) {
+    .content-wrapper {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+}
+
 /* Make "Recent Orders" table horizontal scroll nicely on mobile */
 .table-responsive {
     -webkit-overflow-scrolling: touch;
-    border-radius: 0 0 1.5rem 1.5rem;
-    overflow-x: auto;
-}
-
-/* Custom minimal scrollbar */
-.table-responsive::-webkit-scrollbar {
-    height: 6px;
-}
-.table-responsive::-webkit-scrollbar-track {
-    background: transparent;
-}
-.table-responsive::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
 }
