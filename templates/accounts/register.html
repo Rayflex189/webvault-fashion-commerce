@@ -2,22 +2,63 @@
 {% block title %}Create Account{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-16">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-        <h1 class="text-2xl font-bold mb-2">Create Your Account</h1>
-        <p class="text-sm text-gray-500 mb-6">Join {{ store.store_name }} to track orders and checkout faster.</p>
+<div class="max-w-md mx-auto px-4 py-24 md:py-32">
+    <!-- Elegant Card Container -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 md:p-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="font-serif text-3xl font-bold text-gray-900 mb-3">Create Your Account</h1>
+            <p class="text-sm text-gray-500 font-light leading-relaxed">Join {{ store.store_name }} to track orders and checkout faster.</p>
+        </div>
 
-        <form method="POST" class="space-y-4">
+        <!-- Form -->
+        <form method="POST" class="space-y-5">
             {% csrf_token %}
-            <input type="text" name="full_name" placeholder="Full Name" value="{{ form_data.full_name|default:'' }}" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="email" name="email" placeholder="Email Address" value="{{ form_data.email|default:'' }}" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="text" name="phone" placeholder="Phone Number" value="{{ form_data.phone|default:'' }}" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="password" name="password" placeholder="Password (min 6 chars)" required minlength="6" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <input type="password" name="password2" placeholder="Confirm Password" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--primary-color)]">
-            <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-bold hover:opacity-90 transition">Create Account</button>
+            
+            <!-- Full Name -->
+            <div>
+                <input type="text" name="full_name" placeholder="Full Name" value="{{ form_data.full_name|default:'' }}" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Email Address -->
+            <div>
+                <input type="email" name="email" placeholder="Email Address" value="{{ form_data.email|default:'' }}" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Phone Number -->
+            <div>
+                <input type="text" name="phone" placeholder="Phone Number" value="{{ form_data.phone|default:'' }}" 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Password -->
+            <div>
+                <input type="password" name="password" placeholder="Password (min 6 chars)" required minlength="6" 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Confirm Password -->
+            <div>
+                <input type="password" name="password2" placeholder="Confirm Password" required 
+                       class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full bg-[var(--primary-color)] text-white py-3.5 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20 mt-2">
+                Create Account
+            </button>
         </form>
 
-        <p class="text-sm text-center mt-6 text-gray-500">Already have an account? <a href="{% url 'accounts:login' %}" class="text-[var(--primary-color)] font-semibold">Log in</a></p>
+        <!-- Footer Link -->
+        <p class="text-sm text-center mt-8 text-gray-500 font-light">
+            Already have an account? 
+            <a href="{% url 'accounts:login' %}" class="text-[var(--primary-color)] font-medium hover:underline transition duration-200">Log in</a>
+        </p>
+        
     </div>
 </div>
 {% endblock %}
