@@ -3,21 +3,33 @@
 {% block title %}Shop - {{ store.store_name }}{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
     
-    <!-- Header -->
-    <div class="mb-10 text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Collection</h1>
-        <p class="text-gray-500">Discover the latest styles from {{ store.store_name }}</p>
+    <!-- Page Header -->
+    <div class="text-center mb-16">
+        <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Collection</h1>
+        <p class="text-lg text-gray-500 font-light max-w-2xl mx-auto">Discover the latest styles from {{ store.store_name }}</p>
     </div>
 
     <!-- Category Filters -->
-    <div class="flex flex-wrap justify-center gap-3 mb-10">
-        <a href="{% url 'products:list' %}" class="px-5 py-2 rounded-full text-sm font-medium {% if not current_category %}bg-[var(--primary-color)] text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition">
+    <div class="flex flex-wrap justify-center gap-3 mb-16">
+        <a href="{% url 'products:list' %}" 
+           class="px-7 py-3 rounded-full text-sm font-medium tracking-wide transition duration-300 
+           {% if not current_category %}
+               bg-[var(--primary-color)] text-white shadow-md shadow-[var(--primary-color)]/20
+           {% else %}
+               bg-white border border-gray-200 text-gray-600 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)]
+           {% endif %}">
             All
         </a>
         {% for cat in categories %}
-            <a href="?category={{ cat.slug }}" class="px-5 py-2 rounded-full text-sm font-medium {% if current_category == cat %}bg-[var(--primary-color)] text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition">
+            <a href="?category={{ cat.slug }}" 
+               class="px-7 py-3 rounded-full text-sm font-medium tracking-wide transition duration-300 
+               {% if current_category == cat %}
+                   bg-[var(--primary-color)] text-white shadow-md shadow-[var(--primary-color)]/20
+               {% else %}
+                   bg-white border border-gray-200 text-gray-600 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)]
+               {% endif %}">
                 {{ cat.name }}
             </a>
         {% endfor %}
@@ -25,29 +37,43 @@
 
     <!-- Product Grid -->
     {% if products %}
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
         {% for product in products %}
-        <a href="{% url 'products:detail' product.slug %}" class="group">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 relative aspect-[3/4]">
+        <a href="{% url 'products:detail' product.slug %}" class="group block">
+            <div class="bg-gray-50 rounded-3xl overflow-hidden mb-5 relative aspect-[3/4] shadow-xl shadow-gray-200/50 hover:shadow-md transition-shadow duration-300">
                 {% if product.primary_image %}
-                    <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
                 {% else %}
-                    <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+                    <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-light uppercase tracking-wider">No Image</div>
                 {% endif %}
                 
                 {% if product.is_featured %}
-                    <span class="absolute top-2 left-2 bg-[var(--primary-color)] text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Featured</span>
+                    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Featured</span>
                 {% endif %}
             </div>
-            <h3 class="font-semibold text-gray-800 truncate">{{ product.name }}</h3>
-            <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+            <div class="px-1">
+                <h3 class="font-medium text-gray-900 truncate text-sm md:text-base group-hover:text-[var(--primary-color)] transition-colors duration-200">{{ product.name }}</h3>
+                <p class="text-gray-600 font-semibold mt-1 text-sm md:text-base">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+            </div>
         </a>
         {% endfor %}
     </div>
+    
     {% else %}
-    <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
-        <p class="text-gray-500 text-lg">No products found in this category.</p>
-        <a href="/shop/" class="text-[var(--primary-color)] font-medium mt-2 inline-block">View all products</a>
+    <!-- Empty State -->
+    <div class="text-center py-24 bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 max-w-2xl mx-auto">
+        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+        </div>
+        <p class="text-lg text-gray-500 font-light mb-8">No products found in this category.</p>
+        <a href="/shop/" class="inline-flex items-center gap-2 text-[var(--primary-color)] font-medium tracking-wider uppercase text-sm hover:text-[var(--secondary-color)] transition duration-300 group">
+            View All Products 
+            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+        </a>
     </div>
     {% endif %}
 
