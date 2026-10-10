@@ -4,62 +4,86 @@ Usage: {% include 'orders/_status_timeline.html' with order=order %}
 {% endcomment %}
 
 {% with status=order.status %}
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-    <h2 class="font-bold mb-6">Order Progress</h2>
+<div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 mb-8">
+    <h2 class="font-serif text-2xl font-bold text-gray-900 mb-8">Order Progress</h2>
 
     {% if status == 'cancelled' %}
-        <div class="flex items-center gap-3 text-red-600">
-            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-xl">✕</div>
+        <!-- Cancelled State -->
+        <div class="flex items-center gap-4 bg-red-50/50 border border-red-100 p-5 rounded-2xl">
+            <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
             <div>
-                <p class="font-semibold">Order Cancelled</p>
-                <p class="text-xs text-gray-500">This order has been cancelled.</p>
+                <p class="font-semibold text-red-900">Order Cancelled</p>
+                <p class="text-xs text-red-600/80 mt-1 font-light">This order has been cancelled.</p>
             </div>
         </div>
     {% else %}
-        <div class="flex items-center justify-between relative">
+        <!-- Progress Timeline -->
+        <div class="flex items-center justify-between relative px-2">
             <!-- Progress line behind dots -->
-            <div class="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 z-0"></div>
+            <div class="absolute top-5 left-0 right-0 h-0.5 bg-gray-100 z-0"></div>
 
             <!-- Steps -->
             {% with current_step=status %}
+            
             <!-- Step 1: Placed (always complete) -->
             <div class="relative z-10 flex flex-col items-center flex-1">
-                <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
-                <p class="text-xs font-medium text-gray-700 mt-2">Placed</p>
+                <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center shadow-md shadow-[var(--primary-color)]/20">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-900 mt-3 text-center">Placed</p>
             </div>
 
             <!-- Step 2: Paid -->
             <div class="relative z-10 flex flex-col items-center flex-1">
                 {% if current_step == 'pending' %}
-                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">2</div>
-                    <p class="text-xs font-medium text-gray-400 mt-2">Paid</p>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 text-gray-400 flex items-center justify-center font-medium text-sm">2</div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-400 mt-3 text-center">Paid</p>
                 {% else %}
-                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
-                    <p class="text-xs font-medium text-gray-700 mt-2">Paid</p>
+                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center shadow-md shadow-[var(--primary-color)]/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-900 mt-3 text-center">Paid</p>
                 {% endif %}
             </div>
 
             <!-- Step 3: Shipped -->
             <div class="relative z-10 flex flex-col items-center flex-1">
                 {% if current_step == 'pending' or current_step == 'paid' %}
-                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">3</div>
-                    <p class="text-xs font-medium text-gray-400 mt-2">Shipped</p>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 text-gray-400 flex items-center justify-center font-medium text-sm">3</div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-400 mt-3 text-center">Shipped</p>
                 {% else %}
-                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center font-bold">✓</div>
-                    <p class="text-xs font-medium text-gray-700 mt-2">Shipped</p>
+                    <div class="w-10 h-10 rounded-full bg-[var(--primary-color)] text-white flex items-center justify-center shadow-md shadow-[var(--primary-color)]/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-900 mt-3 text-center">Shipped</p>
                 {% endif %}
             </div>
 
             <!-- Step 4: Delivered -->
             <div class="relative z-10 flex flex-col items-center flex-1">
                 {% if current_step == 'delivered' %}
-                    <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">✓</div>
-                    <p class="text-xs font-medium text-green-700 mt-2">Delivered</p>
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-emerald-700 mt-3 text-center">Delivered</p>
                 {% else %}
-                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold">4</div>
-                    <p class="text-xs font-medium text-gray-400 mt-2">Delivered</p>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 text-gray-400 flex items-center justify-center font-medium text-sm">4</div>
+                    <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-400 mt-3 text-center">Delivered</p>
                 {% endif %}
             </div>
+            
             {% endwith %}
         </div>
     {% endif %}
