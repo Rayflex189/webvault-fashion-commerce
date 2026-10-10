@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:24px;">
+
+    <div style="background:{{ store.primary_color }};padding:24px;text-align:center;border-radius:12px 12px 0 0;">
+        <h1 style="color:white;margin:0;font-size:22px;">🎉 New Sale!</h1>
+    </div>
+
+    <div style="background:white;padding:32px;border-radius:0 0 12px 12px;">
+        <p style="color:#4b5563;line-height:1.6;">
+            You just made a sale on <strong>{{ store.store_name }}</strong>!
+        </p>
+
+        <div style="background:#f9fafb;padding:16px;border-radius:8px;margin:24px 0;">
+            <p style="margin:0;color:#6b7280;font-size:12px;text-transform:uppercase;">Order</p>
+            <p style="margin:4px 0 0;color:#111827;font-size:18px;font-weight:bold;">{{ order.order_number }}</p>
+
+            <p style="margin:16px 0 0;color:#6b7280;font-size:12px;text-transform:uppercase;">Customer</p>
+            <p style="margin:4px 0 0;color:#111827;">{{ order.full_name }}</p>
+            <p style="margin:4px 0 0;color:#6b7280;font-size:14px;">{{ order.email }} · {{ order.phone }}</p>
+
+            <p style="margin:16px 0 0;color:#6b7280;font-size:12px;text-transform:uppercase;">Total</p>
+            <p style="margin:4px 0 0;color:{{ store.primary_color }};font-size:20px;font-weight:bold;">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
+        </div>
+
+        <p style="color:#4b5563;">
+            Log into your admin dashboard to view the order and update its status.
+        </p>
+
+        <p style="margin-top:32px;color:#9ca3af;font-size:12px;text-align:center;">
+            Powered by WebVault
+        </p>
+    </div>
+</div>
+</body>
+</html>
