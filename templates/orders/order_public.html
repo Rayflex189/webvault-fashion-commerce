@@ -2,33 +2,45 @@
 {% block title %}Order {{ order.order_number }}{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 py-12">
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
 
-    <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold mb-1">Order {{ order.order_number }}</h1>
-        <p class="text-gray-500">Placed {{ order.created_at|date:"M d, Y" }}</p>
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+        <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Order Details</p>
+        <h1 class="font-serif text-4xl font-bold text-gray-900 mb-3">{{ order.order_number }}</h1>
+        <p class="text-sm text-gray-500 font-light">Placed {{ order.created_at|date:"M d, Y" }}</p>
     </div>
 
+    <!-- Status Timeline Component -->
     {% include 'orders/_status_timeline.html' with order=order %}
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-        <div class="flex justify-between text-sm">
-            <span class="text-gray-600">Total</span>
-            <span class="font-bold text-[var(--primary-color)]">{{ order.currency }} {{ order.total|floatformat:2 }}</span>
+    <!-- Order Summary Card -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 md:p-10 mb-8">
+        <div class="flex justify-between items-center pb-5 border-b border-gray-50">
+            <span class="text-gray-500 font-light text-sm">Total Amount</span>
+            <span class="font-serif text-2xl font-bold text-[var(--primary-color)]">{{ order.currency }} {{ order.total|floatformat:2 }}</span>
         </div>
-        <div class="flex justify-between text-sm mt-2">
-            <span class="text-gray-600">Items</span>
-            <span class="font-medium">{{ order.items.count }}</span>
+        <div class="flex justify-between items-center pt-5">
+            <span class="text-gray-500 font-light text-sm">Items Ordered</span>
+            <span class="font-medium text-gray-900 text-sm">{{ order.items.count }}</span>
         </div>
     </div>
 
-    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
-        <p class="text-sm text-yellow-800">
-            <strong>Want full details?</strong> Log in with the email used on this order.
+    <!-- Login Prompt CTA -->
+    <div class="bg-blue-50/50 border border-blue-100 rounded-3xl p-8 text-center">
+        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm text-[var(--primary-color)]">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+        </div>
+        <p class="text-sm text-gray-600 font-light mb-6 leading-relaxed">
+            <strong class="font-medium text-gray-900">Want full details?</strong> Log in with the email used on this order to view your complete order history.
         </p>
-        <a href="{% url 'accounts:login' %}?next={% url 'orders:detail' order.order_number %}" class="mt-3 inline-block bg-[var(--primary-color)] text-white px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition text-sm">
+        <a href="{% url 'accounts:login' %}?next={% url 'orders:detail' order.order_number %}" 
+           class="inline-block bg-[var(--primary-color)] text-white px-8 py-3.5 rounded-full font-medium text-xs tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20">
             Log In
         </a>
     </div>
+    
 </div>
 {% endblock %}
