@@ -2,81 +2,114 @@
 {% block title %}My Account{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-12">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
 
-    <h1 class="text-3xl font-bold mb-8">My Account</h1>
+    <!-- Page Header -->
+    <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-12">My Account</h1>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Profile Info -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+        
+        <!-- Profile Info Section -->
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 class="text-lg font-bold mb-4">Profile Info</h2>
-                <form method="POST" class="space-y-4">
+            <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8">
+                <h2 class="font-serif text-xl font-bold text-gray-900 mb-6">Profile Info</h2>
+                
+                <form method="POST" class="space-y-5">
                     {% csrf_token %}
+                    
+                    <!-- First Name -->
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 uppercase">First Name</label>
-                        <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                        <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">First Name</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" 
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
                     </div>
+                    
+                    <!-- Last Name -->
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 uppercase">Last Name</label>
-                        <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                        <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Last Name</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" 
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
                     </div>
+                    
+                    <!-- Email (Disabled) -->
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 uppercase">Email</label>
-                        <input type="email" value="{{ user.email }}" disabled class="w-full border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 mt-1 text-gray-500">
+                        <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                        <input type="email" value="{{ user.email }}" disabled 
+                               class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400 cursor-not-allowed">
                     </div>
+                    
+                    <!-- Phone -->
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 uppercase">Phone</label>
-                        <input type="text" name="phone" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]">
+                        <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Phone</label>
+                        <input type="text" name="phone" 
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
                     </div>
+                    
+                    <!-- Address -->
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 uppercase">Default Address</label>
-                        <textarea name="address" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:border-[var(--primary-color)]"></textarea>
+                        <label class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Default Address</label>
+                        <textarea name="address" rows="3" 
+                                  class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200 resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">Save Changes</button>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            class="w-full bg-[var(--primary-color)] text-white py-3.5 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20 mt-4">
+                        Save Changes
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- Order History -->
+        <!-- Order History Section -->
         <div class="lg:col-span-2">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold">My Orders ({{ order_count }})</h2>
-                    <a href="{% url 'orders:track' %}" class="text-sm text-[var(--primary-color)] font-medium">Track an order</a>
+            <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-8 h-full">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                    <h2 class="font-serif text-xl font-bold text-gray-900">My Orders ({{ order_count }})</h2>
+                    <a href="{% url 'orders:track' %}" class="text-sm font-medium tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300">
+                        Track an order
+                    </a>
                 </div>
 
                 {% if orders %}
-                    <div class="space-y-3">
+                    <div class="space-y-4">
                         {% for order in orders %}
-                        <a href="{% url 'orders:detail' order.order_number %}" class="block border border-gray-100 rounded-xl p-4 hover:border-[var(--primary-color)] transition">
+                        <a href="{% url 'orders:detail' order.order_number %}" class="block border border-gray-100 rounded-2xl p-5 hover:border-[var(--primary-color)] hover:shadow-sm bg-white transition duration-300 group">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="font-semibold text-gray-800">{{ order.order_number }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">{{ order.created_at|date:"M d, Y" }}</p>
+                                    <p class="font-medium text-gray-900 group-hover:text-[var(--primary-color)] transition-colors duration-200">{{ order.order_number }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ order.created_at|date:"M d, Y" }}</p>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs px-2 py-1 rounded-full
-                                        {% if order.status == 'paid' %}bg-green-100 text-green-700
-                                        {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
-                                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-700
-                                        {% else %}bg-blue-100 text-blue-700{% endif %}">
+                                    <span class="text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider
+                                        {% if order.status == 'paid' %}bg-green-50 text-green-700
+                                        {% elif order.status == 'pending' %}bg-yellow-50 text-yellow-700
+                                        {% elif order.status == 'cancelled' %}bg-red-50 text-red-700
+                                        {% else %}bg-blue-50 text-blue-700{% endif %}">
                                         {{ order.get_status_display }}
                                     </span>
-                                    <p class="text-sm font-bold mt-2">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
+                                    <p class="text-sm font-semibold text-gray-900 mt-3">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
                                 </div>
                             </div>
                         </a>
                         {% endfor %}
                     </div>
                 {% else %}
-                    <div class="text-center py-12 text-gray-400">
-                        <p>You haven't placed any orders yet.</p>
-                        <a href="/shop/" class="text-[var(--primary-color)] font-medium mt-2 inline-block">Start Shopping →</a>
+                    <!-- Empty State -->
+                    <div class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                        <p class="text-gray-500 font-light mb-4">You haven't placed any orders yet.</p>
+                        <a href="/shop/" class="inline-flex items-center gap-2 text-[var(--primary-color)] font-medium tracking-wider uppercase text-sm hover:text-[var(--secondary-color)] transition duration-300 group">
+                            Start Shopping 
+                            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
                     </div>
                 {% endif %}
             </div>
         </div>
+        
     </div>
 </div>
 {% endblock %}
