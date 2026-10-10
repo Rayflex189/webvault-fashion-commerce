@@ -184,22 +184,35 @@ JAZZMIN_SETTINGS = {
 } 
 
 # ─────────────────────────────────────────
-# EMAIL CONFIGURATION
+# EMAIL CONFIGURATION (Django 6.1+)
 # ─────────────────────────────────────────
 import os
 
-# Development default: prints emails to the console (no real sending)
-EMAIL_BACKEND = os.environ.get(
-    'EMAIL_BACKEND',
-    'django.core.mail.backends.console.EmailBackend'
-)
+# Development default: print emails to the console.
+# In production, the buyer sets EMAIL_HOST, EMAIL_HOST_USER, and EMAIL_HOST_PASSWORD
+# as environment variables on their hosting platform (Railway, Render, etc.).
+_email_host = os.environ.get('EMAIL_HOST', '')
 
-# These are used in production. The buyer fills them via environment variables.
-EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+if _email_host:
+    # Production mode — use SMTP
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": {
+                "host": _email_host,
+                "port": int(os.environ.get('EMAIL_PORT', 587)),
+                "use_tls": os.environ.get('EMAIL_USE_TLS', 'True') == 'True',
+                "username": os.environ.get('EMAIL_HOST_USER', ''),
+                "password": os.environ.get('EMAIL_HOST_PASSWORD', ''),
+            },
+        },
+    }
+else:
+    # Development mode — print emails to the console (no real sending)
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.console.EmailBackend",
+        },
+    }
 
-# Default "from" address — the seller's business email falls back to this
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@webvault.store')
