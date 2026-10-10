@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8">My Orders</h1>
+
+    {% if orders %}
+    <div class="space-y-3">
+        {% for order in orders %}
+        <a href="{% url 'orders:detail' order.order_number %}" class="block bg-white border border-gray-100 rounded-2xl p-5 hover:border-[var(--primary-color)] transition">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="font-semibold text-gray-800">{{ order.order_number }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ order.created_at|date:"M d, Y · H:i" }}</p>
+                    <p class="text-sm text-gray-500 mt-2">{{ order.items.count }} item{{ order.items.count|pluralize }}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs px-3 py-1 rounded-full
+                        {% if order.status == 'paid' %}bg-green-100 text-green-700
+                        {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
+                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-700
+                        {% else %}bg-blue-100 text-blue-700{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                    <p class="text-lg font-bold mt-2">{{ order.currency }} {{ order.total|floatformat:2 }}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
+        <p class="text-gray-500">You haven't placed any orders yet.</p>
+        <a href="/shop/" class="text-[var(--primary-color)] font-medium mt-2 inline-block">Start Shopping →</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
