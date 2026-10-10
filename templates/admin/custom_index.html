@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full overflow-hidden">
 
     <!-- ═══════════ PAGE HEADER ═══════════ -->
     <div class="mb-10">
@@ -17,8 +17,8 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
             <div class="flex justify-between items-start mb-4">
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Today's Sales</p>
-                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                 </div>
             </div>
             <p class="font-serif text-3xl font-bold text-gray-900">{{ currency }} {{ today_sales|floatformat:2 }}</p>
@@ -28,8 +28,8 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
             <div class="flex justify-between items-start mb-4">
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Pending Orders</p>
-                <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </div>
             <p class="font-serif text-3xl font-bold text-gray-900">{{ pending_orders }}</p>
@@ -39,8 +39,8 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
             <div class="flex justify-between items-start mb-4">
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Active Products</p>
-                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                 </div>
             </div>
             <p class="font-serif text-3xl font-bold text-gray-900">{{ total_products }}</p>
@@ -50,8 +50,8 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
             <div class="flex justify-between items-start mb-4">
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Low Stock Alerts</p>
-                <div class="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div class="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                 </div>
             </div>
             <p class="font-serif text-3xl font-bold text-gray-900">{{ low_stock }}</p>
@@ -67,8 +67,8 @@
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Total Orders</p>
                 <p class="font-serif text-4xl font-bold text-gray-900">{{ total_orders }}</p>
             </div>
-            <div class="w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <div class="w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
             </div>
         </div>
 
@@ -78,8 +78,8 @@
                 <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Registered Customers</p>
                 <p class="font-serif text-4xl font-bold text-gray-900">{{ total_customers }}</p>
             </div>
-            <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
             <h2 class="font-serif text-2xl font-bold text-gray-900">Recent Orders</h2>
             <a href="{% url 'admin:orders_order_changelist' %}" class="inline-flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 group">
                 View All 
-                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <svg width="16" height="16" style="width:16px; height:16px;" class="transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>
 
@@ -137,7 +137,7 @@
                     <tr>
                         <td colspan="5" class="px-6 py-16 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-400">
-                                <svg class="w-10 h-10 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                                <svg width="40" height="40" style="width:40px; height:40px;" class="mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
                                 <p class="text-sm font-light">No orders yet. Orders will appear here as customers place them.</p>
                             </div>
                         </td>
@@ -159,7 +159,7 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
             <div class="flex items-center gap-4 mb-6">
                 <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Orders</h3>
             </div>
@@ -172,7 +172,7 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
             <div class="flex items-center gap-4 mb-6">
                 <div class="w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Products</h3>
             </div>
@@ -185,7 +185,7 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
             <div class="flex items-center gap-4 mb-6">
                 <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Delivery</h3>
             </div>
@@ -198,7 +198,7 @@
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
             <div class="flex items-center gap-4 mb-6">
                 <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Store Settings</h3>
             </div>
