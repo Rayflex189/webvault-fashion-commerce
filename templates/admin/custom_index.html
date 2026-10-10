@@ -2,212 +2,235 @@
 {% load i18n %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full overflow-hidden">
 
-    <!-- ═══════════ PAGE HEADER ═══════════ -->
-    <div class="mb-10">
-        <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-2">Business Overview</h1>
-        <p class="text-lg text-gray-500 font-light">Real-time snapshot of your store performance</p>
-    </div>
-
-    <!-- ═══════════ PRIMARY METRICS ═══════════ -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        
-        <!-- Today's Sales -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
-            <div class="flex justify-between items-start mb-4">
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Today's Sales</p>
-                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                </div>
-            </div>
-            <p class="font-serif text-3xl font-bold text-gray-900">{{ currency }} {{ today_sales|floatformat:2 }}</p>
-        </div>
-
-        <!-- Pending Orders -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
-            <div class="flex justify-between items-start mb-4">
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Pending Orders</p>
-                <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-            </div>
-            <p class="font-serif text-3xl font-bold text-gray-900">{{ pending_orders }}</p>
-        </div>
-
-        <!-- Active Products -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
-            <div class="flex justify-between items-start mb-4">
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Active Products</p>
-                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                </div>
-            </div>
-            <p class="font-serif text-3xl font-bold text-gray-900">{{ total_products }}</p>
-        </div>
-
-        <!-- Low Stock Alerts -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
-            <div class="flex justify-between items-start mb-4">
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Low Stock Alerts</p>
-                <div class="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                </div>
-            </div>
-            <p class="font-serif text-3xl font-bold text-gray-900">{{ low_stock }}</p>
-        </div>
-    </div>
-
-    <!-- ═══════════ SECONDARY METRICS ═══════════ -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        
-        <!-- Total Orders -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 md:p-8 flex justify-between items-center hover:shadow-md transition-shadow duration-300">
-            <div>
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Total Orders</p>
-                <p class="font-serif text-4xl font-bold text-gray-900">{{ total_orders }}</p>
-            </div>
-            <div class="w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-            </div>
-        </div>
-
-        <!-- Registered Customers -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 md:p-8 flex justify-between items-center hover:shadow-md transition-shadow duration-300">
-            <div>
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Registered Customers</p>
-                <p class="font-serif text-4xl font-bold text-gray-900">{{ total_customers }}</p>
-            </div>
-            <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════ RECENT ORDERS ═══════════ -->
-    <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 overflow-hidden mb-10">
-        
-        <div class="p-6 md:p-8 border-b border-gray-50 flex justify-between items-center">
-            <h2 class="font-serif text-2xl font-bold text-gray-900">Recent Orders</h2>
-            <a href="{% url 'admin:orders_order_changelist' %}" class="inline-flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 group">
-                View All 
-                <svg width="16" height="16" style="width:16px; height:16px;" class="transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-50/50">
-                        <th class="px-6 py-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Order #</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Total</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                    {% for order in recent_orders %}
-                    <tr class="hover:bg-gray-50/50 transition-colors duration-200">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{% url 'admin:orders_order_change' order.id %}" class="font-medium text-gray-900 hover:text-[var(--primary-color)] transition-colors">
-                                {{ order.order_number }}
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ order.full_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{{ currency }} {{ order.total|floatformat:2 }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            {% if order.status == 'paid' %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700">Paid</span>
-                            {% elif order.status == 'pending' %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700">Pending</span>
-                            {% elif order.status == 'shipped' %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700">Shipped</span>
-                            {% elif order.status == 'delivered' %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700">Delivered</span>
-                            {% elif order.status == 'cancelled' %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700">Cancelled</span>
-                            {% else %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-700">{{ order.get_status_display }}</span>
-                            {% endif %}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-light">{{ order.created_at|date:"M d, Y" }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-16 text-center">
-                            <div class="flex flex-col items-center justify-center text-gray-400">
-                                <svg width="40" height="40" style="width:40px; height:40px;" class="mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                                <p class="text-sm font-light">No orders yet. Orders will appear here as customers place them.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- ═══════════ MANAGE DATA (Quick Links) ═══════════ -->
-    <div class="mb-6">
-        <h2 class="font-serif text-2xl font-bold text-gray-900">Manage Data</h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <!-- Orders -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                </div>
-                <h3 class="font-serif text-lg font-bold text-gray-900">Orders</h3>
-            </div>
-            <a href="{% url 'admin:orders_order_changelist' %}" class="block text-center w-full bg-[var(--secondary-color)] text-white py-3 rounded-full font-medium text-xs tracking-wider uppercase hover:opacity-90 transition duration-300">
-                View Orders
-            </a>
-        </div>
-
-        <!-- Products -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                </div>
-                <h3 class="font-serif text-lg font-bold text-gray-900">Products</h3>
-            </div>
-            <a href="{% url 'admin:products_product_changelist' %}" class="block text-center w-full bg-[var(--secondary-color)] text-white py-3 rounded-full font-medium text-xs tracking-wider uppercase hover:opacity-90 transition duration-300">
-                Manage Products
-            </a>
-        </div>
-
-        <!-- Delivery -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
-                </div>
-                <h3 class="font-serif text-lg font-bold text-gray-900">Delivery</h3>
-            </div>
-            <a href="{% url 'admin:delivery_deliverymethod_changelist' %}" class="block text-center w-full bg-[var(--secondary-color)] text-white py-3 rounded-full font-medium text-xs tracking-wider uppercase hover:opacity-90 transition duration-300">
-                Manage Delivery
-            </a>
-        </div>
-
-        <!-- Store Settings -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-50 p-6 flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <svg width="20" height="20" style="width:20px; height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                </div>
-                <h3 class="font-serif text-lg font-bold text-gray-900">Store Settings</h3>
-            </div>
-            <a href="{% url 'admin:core_storesettings_changelist' %}" class="block text-center w-full bg-[var(--secondary-color)] text-white py-3 rounded-full font-medium text-xs tracking-wider uppercase hover:opacity-90 transition duration-300">
-                Store Branding
-            </a>
-        </div>
-
-    </div>
-
+<!-- ─────────── PAGE HEADER ─────────── -->
+<div class="mb-4">
+    <h1 class="h3 mb-1">Business Overview</h1>
+    <p class="text-muted mb-0">Real-time snapshot of your store performance</p>
 </div>
+
+<!-- ─────────── PRIMARY METRICS (4 cards on desktop, 2 on tablet, 1 on mobile) ─────────── -->
+<div class="row g-3 mb-4">
+    <!-- Today's Sales -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Today's Sales</div>
+                    <div class="h3 fw-bold mb-0">{{ currency }} {{ today_sales|floatformat:2 }}</div>
+                </div>
+                <i class="fas fa-chart-line fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Pending Orders</div>
+                    <div class="h3 fw-bold mb-0">{{ pending_orders }}</div>
+                </div>
+                <i class="fas fa-clock fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Products -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Active Products</div>
+                    <div class="h3 fw-bold mb-0">{{ total_products }}</div>
+                </div>
+                <i class="fas fa-tshirt fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+            <div class="card-body text-white d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small opacity-75 mb-1">Low Stock Alerts</div>
+                    <div class="h3 fw-bold mb-0">{{ low_stock }}</div>
+                </div>
+                <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────── SECONDARY METRICS ─────────── -->
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small text-muted mb-1">Total Orders</div>
+                    <div class="h4 fw-bold mb-0 text-primary">{{ total_orders }}</div>
+                </div>
+                <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                    <i class="fas fa-shopping-bag fa-lg text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-uppercase small text-muted mb-1">Registered Customers</div>
+                    <div class="h4 fw-bold mb-0 text-secondary">{{ total_customers }}</div>
+                </div>
+                <div class="bg-secondary bg-opacity-10 rounded-circle p-3">
+                    <i class="fas fa-users fa-lg text-secondary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────── RECENT ORDERS ─────────── -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold">Recent Orders</h5>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="btn btn-sm btn-outline-primary">
+                    View All <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-3">Order #</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th class="pe-3">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recent_orders %}
+                        <tr>
+                            <td class="ps-3">
+                                <a href="{% url 'admin:orders_order_change' order.id %}" class="fw-semibold text-decoration-none">
+                                    {{ order.order_number }}
+                                </a>
+                            </td>
+                            <td>{{ order.full_name }}</td>
+                            <td class="fw-semibold">{{ currency }} {{ order.total|floatformat:2 }}</td>
+                            <td>
+                                {% if order.status == 'paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% elif order.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif order.status == 'shipped' %}
+                                    <span class="badge bg-info">Shipped</span>
+                                {% elif order.status == 'delivered' %}
+                                    <span class="badge bg-primary">Delivered</span>
+                                {% elif order.status == 'cancelled' %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ order.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="pe-3 text-muted">{{ order.created_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-2x d-block mb-2 opacity-50"></i>
+                                No orders yet. Orders will appear here as customers place them.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─────────── MANAGE DATA (Quick Links) ─────────── -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h5 class="fw-bold mb-3">Manage Data</h5>
+    </div>
+
+    <!-- Orders -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-shopping-cart text-primary"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Orders</h6>
+                </div>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="btn btn-sm btn-primary w-100">
+                    View Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-info bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-tshirt text-info"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Products</h6>
+                </div>
+                <a href="{% url 'admin:products_product_changelist' %}" class="btn btn-sm btn-info w-100 text-white">
+                    Manage Products
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-warning bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-truck text-warning"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Delivery</h6>
+                </div>
+                <a href="{% url 'admin:delivery_deliverymethod_changelist' %}" class="btn btn-sm btn-warning w-100 text-dark">
+                    Manage Delivery
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Store Settings -->
+    <div class="col-12 col-md-6 col-xl-3 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success bg-opacity-10 rounded p-2 me-3">
+                        <i class="fas fa-store text-success"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Store Settings</h6>
+                </div>
+                <a href="{% url 'admin:core_storesettings_changelist' %}" class="btn btn-sm btn-success w-100">
+                    Store Branding
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
