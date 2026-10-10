@@ -3,28 +3,36 @@
 {% block title %}{{ product.name }} - {{ store.store_name }}{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
 
-    <a href="{% url 'products:list' %}" class="text-sm text-gray-500 hover:text-[var(--primary-color)] mb-6 inline-block">&larr; Back to Shop</a>
+    <!-- Back Link -->
+    <a href="{% url 'products:list' %}" class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase text-gray-500 hover:text-[var(--primary-color)] mb-10 transition-colors duration-200 group">
+        <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Shop
+    </a>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 
         <!-- ═══════════ IMAGE GALLERY ═══════════ -->
         <div>
-            <div class="bg-gray-100 rounded-2xl overflow-hidden aspect-[3/4] mb-3">
+            <!-- Main Image -->
+            <div class="bg-gray-50 rounded-3xl overflow-hidden aspect-[3/4] mb-5 shadow-xl shadow-gray-200/50 border border-gray-50 relative">
                 {% if product.primary_image %}
-                    <img id="main-image" src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover transition duration-300">
+                    <img id="main-image" src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover transition duration-500 ease-out">
                 {% else %}
-                    <div class="w-full h-full flex items-center justify-center text-gray-400">No Image Available</div>
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-light">No Image Available</div>
                 {% endif %}
             </div>
 
+            <!-- Thumbnails -->
             {% if product.images.count > 1 %}
-            <div class="grid grid-cols-4 gap-2">
+            <div class="grid grid-cols-4 gap-4">
                 {% for img in product.images.all %}
                     <button type="button"
                             onclick="swapImage('{{ img.image.url }}')"
-                            class="thumbnail bg-gray-100 rounded-lg overflow-hidden aspect-square cursor-pointer border-2 border-transparent hover:border-[var(--primary-color)] transition {% if forloop.first %}border-[var(--primary-color)]{% endif %}"
+                            class="thumbnail bg-gray-50 rounded-2xl overflow-hidden aspect-square cursor-pointer border-2 transition duration-300 {% if forloop.first %}border-[var(--primary-color)]{% else %}border-transparent hover:border-gray-200{% endif %}"
                             data-src="{{ img.image.url }}">
                         <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}" class="w-full h-full object-cover">
                     </button>
@@ -34,24 +42,27 @@
         </div>
 
         <!-- ═══════════ PRODUCT INFO ═══════════ -->
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+        <div class="flex flex-col">
+            
+            <!-- Title & Category -->
+            <div class="mb-8">
+                {% if product.category %}
+                <p class="text-[11px] font-semibold tracking-wider uppercase text-gray-400 mb-3">{{ product.category.name }}</p>
+                {% endif %}
+                <h1 class="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">{{ product.name }}</h1>
+                <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+            </div>
 
-            {% if product.category %}
-            <p class="text-sm text-gray-500 mb-3">{{ product.category.name }}</p>
-            {% endif %}
-
-            <p class="text-2xl font-bold text-[var(--primary-color)] mb-6">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
-
-            <p class="text-gray-600 leading-relaxed mb-8">{{ product.description }}</p>
+            <!-- Description -->
+            <p class="text-gray-500 font-light leading-relaxed mb-10">{{ product.description }}</p>
 
             <!-- Sizes -->
             {% if product.sizes.exists %}
-            <div class="mb-6">
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Available Sizes</h3>
-                <div class="flex flex-wrap gap-2">
+            <div class="mb-8">
+                <h3 class="text-[11px] font-semibold tracking-wider uppercase text-gray-500 mb-4">Available Sizes</h3>
+                <div class="flex flex-wrap gap-3">
                     {% for size in product.sizes.all %}
-                        <span class="border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium hover:border-[var(--primary-color)] cursor-pointer">{{ size.name }}</span>
+                        <span class="bg-gray-50 border border-gray-200 rounded-xl px-6 py-3 text-sm font-medium text-gray-700 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] cursor-pointer transition duration-200">{{ size.name }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -59,49 +70,53 @@
 
             <!-- Colors -->
             {% if product.colors.exists %}
-            <div class="mb-6">
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Available Colors</h3>
+            <div class="mb-8">
+                <h3 class="text-[11px] font-semibold tracking-wider uppercase text-gray-500 mb-4">Available Colors</h3>
                 <div class="flex flex-wrap gap-3">
                     {% for color in product.colors.all %}
-                        <div class="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer hover:border-[var(--primary-color)]">
-                            <span class="w-4 h-4 rounded-full border border-gray-200" style="background-color: {{ color.hex_code|default:'#000000' }};"></span>
-                            <span class="text-sm font-medium">{{ color.name }}</span>
+                        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-full pl-2 pr-5 py-2 cursor-pointer hover:border-[var(--primary-color)] transition duration-200 group">
+                            <span class="w-6 h-6 rounded-full border border-gray-200 shadow-sm shrink-0" style="background-color: {{ color.hex_code|default:'#000000' }};"></span>
+                            <span class="text-sm font-medium text-gray-700 group-hover:text-[var(--primary-color)] transition-colors">{{ color.name }}</span>
                         </div>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
 
-            <!-- Stock -->
-            <div class="mb-8">
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">Stock Availability</h3>
-                <div class="space-y-2 text-sm text-gray-600">
+            <!-- Stock Availability -->
+            <div class="mb-10">
+                <h3 class="text-[11px] font-semibold tracking-wider uppercase text-gray-500 mb-4">Stock Availability</h3>
+                <div class="space-y-3 text-sm">
                     {% for variant in product.variants.all %}
-                        <div class="flex justify-between border-b border-gray-100 pb-2">
-                            <span>{{ variant.size.name }} / {{ variant.color.name }}</span>
+                        <div class="flex justify-between items-center border-b border-gray-50 pb-3">
+                            <span class="text-gray-600 font-light">{{ variant.size.name }} / {{ variant.color.name }}</span>
                             {% if variant.stock > 0 %}
-                                <span class="text-green-600 font-medium">{{ variant.stock }} in stock</span>
+                                <span class="text-emerald-600 font-medium text-[11px] uppercase tracking-wider">{{ variant.stock }} in stock</span>
                             {% else %}
-                                <span class="text-red-500 font-medium">Out of stock</span>
+                                <span class="text-red-500 font-medium text-[11px] uppercase tracking-wider">Out of stock</span>
                             {% endif %}
                         </div>
                     {% empty %}
-                        <p class="text-gray-400 italic">No variants configured yet.</p>
+                        <p class="text-gray-400 italic font-light text-sm">No variants configured yet.</p>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Add to cart -->
-            <form method="POST" action="{% url 'orders:cart_add' product.variants.first.id %}" class="space-y-4">
+            <!-- Add to Cart Form -->
+            <form method="POST" action="{% url 'orders:cart_add' product.variants.first.id %}" class="space-y-6 pt-8 border-t border-gray-50 mt-auto">
                 {% csrf_token %}
-                <div class="flex items-center gap-4">
-                    <label class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Qty</label>
-                    <input type="number" name="quantity" value="1" min="1" class="w-20 border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:border-[var(--primary-color)]">
+                <div class="flex items-center gap-6">
+                    <label class="text-[11px] font-semibold tracking-wider uppercase text-gray-500">Quantity</label>
+                    <input type="number" name="quantity" value="1" min="1" 
+                           class="w-24 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
                 </div>
-                <button type="submit" class="w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition shadow-lg shadow-gray-200">
+                
+                <button type="submit" 
+                        class="w-full bg-[var(--primary-color)] text-white py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md shadow-[var(--primary-color)]/20">
                     Add to Cart
                 </button>
             </form>
+            
         </div>
     </div>
 </div>
