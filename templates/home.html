@@ -1,58 +1,100 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- Hero Section -->
+    <!-- ═══════════ HERO SECTION ═══════════ -->
     <section class="relative bg-[var(--secondary-color)] text-white py-20 px-4 overflow-hidden">
         {% if store.hero_banner %}
             <img src="{{ store.hero_banner.url }}" alt="Hero" class="absolute inset-0 w-full h-full object-cover opacity-30">
         {% endif %}
-        
+
         <div class="relative max-w-7xl mx-auto text-center z-10">
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
                 {{ store.hero_text }}
             </h1>
             <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                {{ store.about_us|default:"Discover our latest collection of premium fashion." }}
+                {{ store.about_us|default:"Discover our latest collection of premium fashion."|truncatewords:20 }}
             </p>
-            <a href="#" class="inline-block bg-[var(--primary-color)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:opacity-90 transition">
+            <a href="{% url 'products:list' %}" class="inline-block bg-[var(--primary-color)] text-white px-8 py-4 rounded-lg font-bold text-lg hover:opacity-90 transition">
                 Shop Now
             </a>
         </div>
     </section>
 
-    <!-- Featured Products Placeholder -->
+    <!-- ═══════════ CATEGORY SHORTCUTS ═══════════ -->
+    {% if categories %}
+    <section class="max-w-7xl mx-auto px-4 py-12">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Shop by Category</h2>
+        <div class="flex flex-wrap justify-center gap-3">
+            {% for cat in categories %}
+                <a href="{% url 'products:list' %}?category={{ cat.slug }}" class="bg-white border border-gray-200 rounded-full px-6 py-3 text-sm font-medium text-gray-700 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] transition">
+                    {{ cat.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ═══════════ FEATURED PRODUCTS ═══════════ -->
     <section class="max-w-7xl mx-auto px-4 py-16">
-        <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center">Featured Collection</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Placeholder Cards -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="h-64 bg-gray-200 animate-pulse"></div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-gray-800">Product Name</h3>
-                    <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} 45,000</p>
-                </div>
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Featured Collection</h2>
+                <p class="text-sm text-gray-500 mt-1">Handpicked styles from our latest arrivals</p>
             </div>
-            <!-- Repeat for more cards -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="h-64 bg-gray-200 animate-pulse"></div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-gray-800">Product Name</h3>
-                    <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} 65,000</p>
-                </div>
+            <a href="{% url 'products:list' %}" class="text-sm font-medium text-[var(--primary-color)] hover:underline hidden sm:inline">
+                View All →
+            </a>
+        </div>
+
+        {% if featured_products %}
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {% for product in featured_products %}
+                <a href="{% url 'products:detail' product.slug %}" class="group">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-3 relative aspect-[3/4]">
+                        {% if product.primary_image %}
+                            <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        {% else %}
+                            <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+                        {% endif %}
+                        {% if product.is_featured %}
+                            <span class="absolute top-2 left-2 bg-[var(--primary-color)] text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide">Featured</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="font-semibold text-gray-800 truncate text-sm md:text-base">{{ product.name }}</h3>
+                    <p class="text-[var(--primary-color)] font-bold mt-1 text-sm md:text-base">{{ store.currency }} {{ product.base_price|floatformat:2 }}</p>
+                </a>
+                {% endfor %}
             </div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="h-64 bg-gray-200 animate-pulse"></div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-gray-800">Product Name</h3>
-                    <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} 85,000</p>
-                </div>
+
+            <div class="text-center mt-10 sm:hidden">
+                <a href="{% url 'products:list' %}" class="inline-block bg-[var(--primary-color)] text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                    View All Products
+                </a>
             </div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="h-64 bg-gray-200 animate-pulse"></div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-gray-800">Product Name</h3>
-                    <p class="text-[var(--primary-color)] font-bold mt-1">{{ store.currency }} 120,000</p>
-                </div>
+        {% else %}
+            <div class="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-300">
+                <p class="text-gray-500">No products have been added yet.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <!-- ═══════════ TRUST BADGES ═══════════ -->
+    <section class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+                <div class="w-12 h-12 bg-[var(--primary-color)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3 text-[var(--primary-color)] text-xl">🚚</div>
+                <h3 class="font-bold text-gray-800">Fast Delivery</h3>
+                <p class="text-sm text-gray-500 mt-1">Nationwide shipping available</p>
+            </div>
+            <div>
+                <div class="w-12 h-12 bg-[var(--primary-color)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3 text-[var(--primary-color)] text-xl">🔒</div>
+                <h3 class="font-bold text-gray-800">Secure Payment</h3>
+                <p class="text-sm text-gray-500 mt-1">Your details are always protected</p>
+            </div>
+            <div>
+                <div class="w-12 h-12 bg-[var(--primary-color)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3 text-[var(--primary-color)] text-xl">💬</div>
+                <h3 class="font-bold text-gray-800">Customer Support</h3>
+                <p class="text-sm text-gray-500 mt-1">Reach us at {{ store.contact_phone|default:store.contact_email }}</p>
             </div>
         </div>
     </section>
