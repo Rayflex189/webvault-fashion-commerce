@@ -1,39 +1,77 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- ═══════════ HERO SECTION ═══════════ -->
-    <section class="relative bg-[var(--secondary-color)] text-white py-32 px-4 overflow-hidden">
+
+    <!-- ═══════════ 1. HERO SECTION ═══════════ -->
+    <section class="relative bg-[var(--secondary-color)] text-white py-32 md:py-40 px-4 overflow-hidden">
         {% if store.hero_banner %}
-            <!-- Background Image with subtle overlay -->
             <img src="{{ store.hero_banner.url }}" alt="Hero" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="absolute inset-0 bg-gradient-to-r from-[var(--secondary-color)] via-[var(--secondary-color)]/80 to-transparent"></div>
+        {% else %}
+            <div class="absolute inset-0 bg-gradient-to-br from-[var(--secondary-color)] via-[var(--secondary-color)]/95 to-black/70"></div>
         {% endif %}
 
         <div class="relative max-w-7xl mx-auto z-10 flex flex-col justify-center min-h-[40vh]">
             <div class="max-w-2xl">
-                <h1 class="font-serif text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">
+                <p class="reveal text-[11px] font-semibold tracking-[0.3em] uppercase text-white/70 mb-6">New Season · {{ store.store_name }}</p>
+                <h1 class="reveal reveal-delay-1 font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.05]">
                     {{ store.hero_text }}
                 </h1>
-                <p class="text-lg md:text-xl text-gray-300 mb-10 font-light leading-relaxed">
+                <p class="reveal reveal-delay-2 text-lg md:text-xl text-gray-300 mb-10 font-light leading-relaxed max-w-xl">
                     {{ store.about_us|default:"Discover our latest collection of premium fashion."|truncatewords:20 }}
                 </p>
-                <a href="{% url 'products:list' %}" class="inline-block bg-[var(--primary-color)] text-white px-8 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-lg">
-                    Shop Now
-                </a>
+                <div class="reveal reveal-delay-3 flex flex-wrap items-center gap-4">
+                    <a href="{% url 'products:list' %}" class="inline-block bg-[var(--primary-color)] text-white px-9 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 hover:shadow-xl transition-all duration-300 shadow-lg">
+                        Shop Now
+                    </a>
+                    <a href="{% url 'products:list' %}" class="inline-block border border-white/30 text-white px-9 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:bg-white hover:text-[var(--secondary-color)] transition-all duration-300">
+                        Explore Collection
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-float hidden md:block">
+            <div class="w-6 h-10 border border-white/40 rounded-full flex justify-center pt-2">
+                <div class="w-1 h-2 bg-white/70 rounded-full"></div>
             </div>
         </div>
     </section>
 
-    <!-- ═══════════ CATEGORY SHORTCUTS ═══════════ -->
+    <!-- ═══════════ 2. TRUST STRIP ═══════════ -->
+    <section class="bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="reveal flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
+                <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                Free Shipping
+            </div>
+            <div class="reveal reveal-delay-1 flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
+                <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                Easy Returns
+            </div>
+            <div class="reveal reveal-delay-2 flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
+                <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                Secure Payments
+            </div>
+            <div class="reveal reveal-delay-3 flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
+                <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+                24/7 Support
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ 3. CATEGORY SHORTCUTS ═══════════ -->
     {% if categories %}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="text-center mb-10">
-            <h2 class="font-serif text-3xl font-bold text-gray-900">Shop by Category</h2>
-            <div class="w-16 h-0.5 bg-[var(--primary-color)] mx-auto mt-4"></div>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div class="text-center mb-14 reveal">
+            <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-4">Browse</p>
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900">Shop by Category</h2>
+            <div class="w-16 h-0.5 bg-[var(--primary-color)] mx-auto mt-6"></div>
         </div>
         <div class="flex flex-wrap justify-center gap-3">
             {% for cat in categories %}
-                <a href="{% url 'products:list' %}?category={{ cat.slug }}" class="bg-white border border-gray-200 rounded-full px-6 py-3 text-sm font-medium text-gray-700 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] hover:shadow-sm transition duration-300">
+                <a href="{% url 'products:list' %}?category={{ cat.slug }}" class="reveal reveal-delay-{{ forloop.counter|divisibleby:4|yesno:'1,2' }} bg-white border border-gray-200 rounded-full px-7 py-3.5 text-sm font-medium text-gray-700 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                     {{ cat.name }}
                 </a>
             {% endfor %}
@@ -41,14 +79,15 @@
     </section>
     {% endif %}
 
-    <!-- ═══════════ FEATURED PRODUCTS ═══════════ -->
+    <!-- ═══════════ 4. FEATURED PRODUCTS ═══════════ -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4 reveal">
             <div>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-gray-900">Featured Collection</h2>
-                <p class="text-sm text-gray-500 mt-2 font-light">Handpicked styles from our latest arrivals</p>
+                <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-3">Curated</p>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900">Featured Collection</h2>
+                <p class="text-sm text-gray-500 mt-3 font-light">Handpicked styles from our latest arrivals</p>
             </div>
-            <a href="{% url 'products:list' %}" class="text-sm font-medium tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 hidden sm:inline-flex items-center gap-2 group">
+            <a href="{% url 'products:list' %}" class="text-xs font-semibold tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 hidden sm:inline-flex items-center gap-2 group">
                 View All 
                 <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -59,15 +98,15 @@
         {% if featured_products %}
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
                 {% for product in featured_products %}
-                <a href="{% url 'products:detail' product.slug %}" class="group block">
-                    <div class="bg-gray-50 rounded-2xl overflow-hidden mb-4 relative aspect-[3/4] shadow-sm hover:shadow-md transition-shadow duration-300">
+                <a href="{% url 'products:detail' product.slug %}" class="reveal-scale reveal-delay-{{ forloop.counter|add:0|divisibleby:4|yesno:'4,3' }} group block">
+                    <div class="bg-gray-50 rounded-3xl overflow-hidden mb-5 relative aspect-[3/4] shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-gray-300/50 transition-all duration-500">
                         {% if product.primary_image %}
                             <img src="{{ product.primary_image }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
                         {% else %}
-                            <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+                            <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs uppercase tracking-wider">No Image</div>
                         {% endif %}
                         {% if product.is_featured %}
-                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Featured</span>
+                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Featured</span>
                         {% endif %}
                     </div>
                     <div class="px-1">
@@ -78,24 +117,184 @@
                 {% endfor %}
             </div>
 
-            <div class="text-center mt-12 sm:hidden">
-                <a href="{% url 'products:list' %}" class="inline-block bg-[var(--secondary-color)] text-white px-8 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300">
+            <div class="text-center mt-14 sm:hidden reveal">
+                <a href="{% url 'products:list' %}" class="inline-block bg-[var(--secondary-color)] text-white px-9 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300">
                     View All Products
                 </a>
             </div>
         {% else %}
-            <div class="text-center py-24 bg-white rounded-3xl border border-dashed border-gray-200">
+            <div class="text-center py-24 bg-white rounded-3xl border border-dashed border-gray-200 reveal">
                 <p class="text-gray-500 font-light">No products have been added yet.</p>
             </div>
         {% endif %}
     </section>
 
-    <!-- ═══════════ TRUST BADGES ═══════════ -->
-    <section class="bg-white border-t border-gray-100 py-20 mt-12">
+    <!-- ═══════════ 5. EDITORIAL BANNER ═══════════ -->
+    <section class="relative bg-[var(--secondary-color)] text-white my-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="w-full h-full bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.15),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36">
+            <div class="max-w-3xl mx-auto text-center">
+                <p class="reveal text-[11px] font-semibold tracking-[0.3em] uppercase text-white/60 mb-6">The Philosophy</p>
+                <h2 class="reveal reveal-delay-1 font-serif text-4xl md:text-6xl font-bold leading-tight mb-8">
+                    More than just clothes —<br class="hidden md:block">
+                    <span class="italic font-normal">it's a lifestyle.</span>
+                </h2>
+                <p class="reveal reveal-delay-2 text-lg text-white/70 font-light leading-relaxed mb-10 max-w-xl mx-auto">
+                    Explore our latest collection and find pieces that fit your vibe. Crafted with intention, designed for everyday confidence.
+                </p>
+                <a href="{% url 'products:list' %}" class="reveal reveal-delay-3 inline-flex items-center gap-3 border border-white/30 text-white px-9 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:bg-white hover:text-[var(--secondary-color)] transition-all duration-300 group">
+                    Explore Collection
+                    <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ 6. BRAND STORY SPLIT ═══════════ -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            
+            <!-- Visual -->
+            <div class="reveal-fade relative">
+                <div class="aspect-[4/5] rounded-3xl bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden shadow-2xl shadow-gray-300/40 relative">
+                    {% if store.hero_banner %}
+                        <img src="{{ store.hero_banner.url }}" alt="{{ store.store_name }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="font-serif text-6xl text-gray-400 italic">Craft</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- Decorative accent -->
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 border-2 border-[var(--primary-color)]/30 rounded-3xl -z-10 hidden md:block"></div>
+            </div>
+
+            <!-- Text Content -->
+            <div>
+                <p class="reveal text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-5">Our Story</p>
+                <h2 class="reveal reveal-delay-1 font-serif text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                    Designed with intention,<br>worn with confidence.
+                </h2>
+                <p class="reveal reveal-delay-2 text-gray-500 font-light leading-relaxed mb-6">
+                    {{ store.about_us|default:"Every piece in our collection is thoughtfully designed to blend timeless style with everyday comfort. We believe great clothing should feel as good as it looks."|truncatewords:40 }}
+                </p>
+                <div class="reveal reveal-delay-3 grid grid-cols-2 gap-6 mt-10 pt-8 border-t border-gray-100">
+                    <div>
+                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">100%</p>
+                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">Premium Quality</p>
+                    </div>
+                    <div>
+                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">Free</p>
+                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">Nationwide Delivery</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ 7. TESTIMONIALS ═══════════ -->
+    <section class="bg-white py-24 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-16 reveal">
+                <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-4">Voices</p>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900">What Our Customers Say</h2>
+                <div class="w-16 h-0.5 bg-[var(--primary-color)] mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Testimonial 1 -->
+                <div class="reveal reveal-delay-1 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                    <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    </div>
+                    <p class="text-gray-600 font-light leading-relaxed italic mb-6">"The quality is unmatched. Every piece feels premium and the fit is perfect. I've completely replaced my wardrobe."</p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] flex items-center justify-center font-serif font-bold">A</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Amara O.</p>
+                            <p class="text-xs text-gray-400">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="reveal reveal-delay-2 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                    <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    </div>
+                    <p class="text-gray-600 font-light leading-relaxed italic mb-6">"Fast delivery and beautiful packaging. The team clearly cares about the details. Will definitely order again."</p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] flex items-center justify-center font-serif font-bold">K</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Kwame A.</p>
+                            <p class="text-xs text-gray-400">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="reveal reveal-delay-3 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                    <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    </div>
+                    <p class="text-gray-600 font-light leading-relaxed italic mb-6">"I love how versatile the pieces are. They work for both casual outings and formal events. Truly a lifestyle brand."</p>
+                    <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-[var(--primary-color)]/10 text-[var(--primary-color)] flex items-center justify-center font-serif font-bold">Z</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Zainab M.</p>
+                            <p class="text-xs text-gray-400">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ 8. NEWSLETTER CTA ═══════════ -->
+    <section class="bg-gradient-to-br from-gray-50 to-white py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="reveal text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-5">Stay Connected</p>
+            <h2 class="reveal reveal-delay-1 font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-5">
+                Join the {{ store.store_name }} circle
+            </h2>
+            <p class="reveal reveal-delay-2 text-gray-500 font-light leading-relaxed mb-10 max-w-xl mx-auto">
+                Be the first to discover new arrivals, exclusive offers, and styling inspiration — delivered directly to your inbox.
+            </p>
+            
+            <form class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault();">
+                <input type="email" placeholder="Enter your email" 
+                       class="flex-1 bg-white border border-gray-200 rounded-full px-6 py-4 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
+                <button type="submit" class="bg-[var(--secondary-color)] text-white px-8 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+            <p class="reveal reveal-delay-4 text-xs text-gray-400 mt-5 font-light">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- ═══════════ 9. TRUST BADGES ═══════════ -->
+    <section class="bg-white border-t border-gray-100 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             
-            <!-- Fast Delivery -->
-            <div class="flex flex-col items-center">
+            <div class="reveal flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
@@ -105,8 +304,7 @@
                 <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Nationwide shipping available on all orders.</p>
             </div>
             
-            <!-- Secure Payment -->
-            <div class="flex flex-col items-center">
+            <div class="reveal reveal-delay-1 flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -116,8 +314,7 @@
                 <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Your details are always protected and encrypted.</p>
             </div>
             
-            <!-- Customer Support -->
-            <div class="flex flex-col items-center">
+            <div class="reveal reveal-delay-2 flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -129,4 +326,5 @@
             
         </div>
     </section>
+
 {% endblock %}
