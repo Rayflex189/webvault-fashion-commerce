@@ -51,6 +51,44 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.order_number}"
 
+class AbandonedCart(models.Model):
+    """
+    Persistent snapshot of a customer's active cart.
+    Enables abandoned cart recovery emails.
+    """
+    session_key = models.CharField(max_length=64, db_index=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    email = models.EmailField(blank=True, db_index=True)
+
+    # Snapshot
+    item_count = models.IntegerField(default=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # State tracking
+    is_converted = models.BooleanField(default=False, help_text="Cart turned into an order")
+    reminder_sent = models.BooleanField(default=False)
+    reminder_sent_at = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = "Abandoned Cart"
+        verbose_name_plural = "Abandoned Carts"
+
+    def __str__(self):
+        return f"Cart {self.session_key[:8]}... — {self.item_count} item(s)"
+
+
+class Order(models.Model):
+    # ... existing fields ...
+    # ADD these two fields to the Order model:
+    payment_reminder_sent = models.BooleanField(
+        default=False,
+        help_text="Has a payment reminder been sent for this pending order?"
+    )
+    payment_reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
