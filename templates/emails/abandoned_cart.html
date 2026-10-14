@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:32px 16px;">
+
+    <!-- Header -->
+    <div style="background:{{ store.secondary_color }};padding:40px 24px;text-align:center;border-radius:16px 16px 0 0;">
+        <h1 style="color:white;margin:0;font-family:Georgia,serif;font-size:26px;font-weight:normal;letter-spacing:-0.5px;">You left something behind</h1>
+    </div>
+
+    <!-- Body Card -->
+    <div style="background:white;padding:40px 32px;border-radius:0 0 16px 16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <!-- Greeting -->
+        <p style="color:#111827;font-size:16px;margin:0 0 16px 0;font-weight:500;">
+            Hi{% if abandoned_cart.user %} {{ abandoned_cart.user.first_name|default:"" }}{% endif %},
+        </p>
+        
+        <!-- Message -->
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 24px 0;">
+            Your cart at <strong style="color:#111827;">{{ store.store_name }}</strong> is still waiting for you.
+            You have <strong style="color:#111827;">{{ abandoned_cart.item_count }} item{{ abandoned_cart.item_count|pluralize }}</strong>
+            worth <strong style="color:#111827;">{{ store.currency }} {{ abandoned_cart.subtotal|floatformat:2 }}</strong>.
+        </p>
+
+        <!-- Cart Summary Box -->
+        <div style="background:#F8FAFC;padding:28px;border-radius:12px;border:1px solid #F1F5F9;margin:0 0 32px 0;text-align:center;">
+            <p style="margin:0;color:#6B7280;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Cart Summary</p>
+            <p style="margin:8px 0 0 0;color:{{ store.primary_color }};font-size:28px;font-weight:bold;font-family:Georgia,serif;">
+                {{ store.currency }} {{ abandoned_cart.subtotal|floatformat:2 }}
+            </p>
+        </div>
+
+        <!-- CTA Button -->
+        <div style="text-align:center;margin:32px 0;">
+            <a href="{{ request.scheme }}://{{ request.get_host }}/cart/"
+               style="background:{{ store.primary_color }};color:white;padding:16px 36px;border-radius:9999px;text-decoration:none;font-weight:500;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+                Complete My Order
+            </a>
+        </div>
+
+        <!-- Help Text -->
+        <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:32px 0 0 0;text-align:center;">
+            If you have any questions, just reply to this email — we're happy to help.
+        </p>
+
+        <!-- Footer -->
+        <p style="color:#9CA3AF;font-size:12px;text-align:center;margin:40px 0 0 0;letter-spacing:0.5px;">
+            &copy; {% now "Y" %} {{ store.store_name }}
+        </p>
+        
+    </div>
+</div>
+</body>
+</html>
