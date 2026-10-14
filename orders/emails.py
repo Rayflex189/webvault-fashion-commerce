@@ -6,13 +6,28 @@ from django.utils.html import strip_tags
 from core.models import StoreSettings
 
 
+def _get_site_url():
+    """
+    Return the site's base URL for building absolute links in emails.
+    In production, set SITE_URL as an env var (e.g. https://mystore.com).
+    """
+    return getattr(settings, 'SITE_URL', 'http://localhost:8000').rstrip('/')
+
+
 def _send_email(subject, template_name, context, to_email):
     """Helper to send HTML emails with plain-text fallback."""
+    if not to_email:
+        return False
+
     store = StoreSettings.load()
 
-    # Make sure store details are always available in templates
+    # Make a copy so we don't mutate the caller's dict
+    context = dict(context or {})
+
+    # Always inject store + site_url so templates don't need the request object
     context.update({
         'store': store,
+        'site_url': _get_site_url(),
     })
 
     html_content = render_to_string(template_name, context)
@@ -27,7 +42,15 @@ def _send_email(subject, template_name, context, to_email):
         to=[to_email],
     )
     msg.attach_alternative(html_content, "text/html")
-    msg.send(fail_silently=True)  # Never crash the request if email fails
+
+    try:
+        msg.send(fail_silently=False)
+        return True
+    except Exception as e:
+        # Never crash the request if email fails
+        import logging
+        logging.getLogger(__name__).warning(f"Email send failed: {e}")
+        return False
 
 
 # ─────────────────────────────────────────
@@ -87,3 +110,60 @@ def send_new_sale_email_to_seller(order):
         context={'order': order},
         to_email=store.contact_email,
     )
+
+
+# ─────────────────────────────────────────
+# WELCOME EMAIL (Cycle 1)
+# ─────────────────────────────────────────
+
+def send_welcome_email(user):
+    """Fired automatically when a new customer registers."""
+    if not user.email:
+        return False
+
+    store = StoreSettings.load()
+    subject = f"Welcome to {store.store_name}!"
+
+    return _send_email(
+        subject=subject,
+        template_name='emails/welcome.html',
+        context={'customer': user},
+        to_email=user.email,
+    )
+
+
+# ─────────────────────────────────────────
+# ABANDONED CART RECOVERY (Cycle 1)
+# ─────────────────────────────────────────
+
+def send_abandoned_cart_email(abandoned_cart, cart_items=None):
+    """
+    Send an abandoned cart reminder.
+
+    `cart_items` is optional. For Cycle 1, we only need the snapshot fields
+    (item_count, subtotal). Cycle 2 will pass actual line items.
+    """
+    email = abandoned_cart.email or (abandoned_cart.user.email if abandoned_cart.user else '')
+    if not email:
+        return False
+
+    store = StoreSettings.load()
+    subject = f"You left something behind at {store.store_name}"
+
+    sent = _send_email(
+        subject=subject,
+        template_name='emails/abandoned_cart.html',
+        context={
+            'abandoned_cart': abandoned_cart,
+            'cart_items': cart_items or [],
+        },
+        to_email=email,
+    )
+
+    if sent:
+        from django.utils import timezone
+        abandoned_cart.reminder_sent = True
+        abandoned_cart.reminder_sent_at = timezone.now()
+        abandoned_cart.save(update_fields=['reminder_sent', 'reminder_sent_at'])
+
+    return sent
