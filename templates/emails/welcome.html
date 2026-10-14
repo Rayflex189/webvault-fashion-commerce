@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#F8FAFC;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div style="max-width:600px;margin:0 auto;padding:32px 16px;">
+
+    <!-- Header -->
+    <div style="background:{{ store.secondary_color }};padding:40px 24px;text-align:center;border-radius:16px 16px 0 0;">
+        {% if store.logo %}
+            <img src="{{ store.logo.url }}" alt="{{ store.store_name }}" style="max-height:40px;">
+        {% else %}
+            <h1 style="color:white;margin:0;font-family:Georgia,serif;font-size:28px;font-weight:normal;letter-spacing:-0.5px;">{{ store.store_name }}</h1>
+        {% endif %}
+    </div>
+
+    <!-- Body Card -->
+    <div style="background:white;padding:40px 32px;border-radius:0 0 16px 16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <h2 style="color:#111827;font-family:Georgia,serif;font-size:24px;font-weight:normal;margin:0 0 16px 0;letter-spacing:-0.5px;">
+            Welcome, {{ customer.first_name|default:customer.email }}!
+        </h2>
+        
+        <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 24px 0;">
+            Thanks for joining <strong style="color:#111827;">{{ store.store_name }}</strong>. You can now enjoy faster checkout, track your orders, and get exclusive offers.
+        </p>
+
+        <!-- CTA Button -->
+        <div style="text-align:center;margin:32px 0;">
+            <a href="{{ request.scheme }}://{{ request.get_host }}/shop/"
+               style="background:{{ store.primary_color }};color:white;padding:16px 36px;border-radius:9999px;text-decoration:none;font-weight:500;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+                Start Shopping
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <p style="color:#9CA3AF;font-size:12px;text-align:center;margin:40px 0 0 0;letter-spacing:0.5px;">
+            Questions? Reach us at {{ store.contact_email }}
+        </p>
+        
+    </div>
+</div>
+</body>
+</html>
