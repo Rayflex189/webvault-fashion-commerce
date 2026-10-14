@@ -31,6 +31,89 @@
             --primary-color: {{ store.primary_color|default:"#2563EB" }};
             --secondary-color: {{ store.secondary_color|default:"#003B66" }};
         }
+
+        /* ═══════════ PAGE LOAD ANIMATIONS ═══════════ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        nav {
+            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* ═══════════ SCROLL REVEAL SYSTEM ═══════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), 
+                        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fade-only variant (for images/large blocks) */
+        .reveal-fade {
+            opacity: 0;
+            transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-fade.is-visible { opacity: 1; }
+
+        /* Scale-in variant (for cards) */
+        .reveal-scale {
+            opacity: 0;
+            transform: translateY(24px) scale(0.97);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), 
+                        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-scale.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Staggered delays for grids */
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+        .reveal-delay-6 { transition-delay: 0.6s; }
+
+        /* Subtle floating element for hero */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float { animation: floatSlow 4s ease-in-out infinite; }
+
+        /* Marquee for trust strip (optional elegance) */
+        @keyframes scrollX {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Respect reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-fade, .reveal-scale { 
+                opacity: 1 !important; 
+                transform: none !important; 
+                transition: none !important; 
+            }
+            body, nav, .animate-float { animation: none !important; }
+            html { scroll-behavior: auto; }
+        }
     </style>
 
     <script src="/static/js/main.js" defer></script>
@@ -50,7 +133,7 @@
                 {% endif %}
             </div>
 
-            <!-- Main Navigation Links (Hidden on mobile) -->
+            <!-- Main Navigation Links -->
             <div class="hidden md:flex gap-8 text-sm font-medium items-center tracking-wide">
                 <a href="/" class="hover:text-gray-300 transition-colors duration-200">Home</a>
                 <a href="/shop/" class="hover:text-gray-300 transition-colors duration-200">Shop</a>
@@ -60,12 +143,10 @@
             <!-- Utility Icons & Auth -->
             <div class="flex items-center gap-6 text-sm font-medium">
                 
-                <!-- Search Icon (Optional visual addition) -->
                 <button class="hover:text-gray-300 transition-colors hidden sm:block">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
 
-                <!-- Cart -->
                 <a href="{% url 'orders:cart' %}" class="relative hover:text-gray-300 transition-colors duration-200 flex items-center">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     {% if cart_count > 0 %}
@@ -73,14 +154,12 @@
                     {% endif %}
                 </a>
 
-                <!-- User Account Dropdown -->
                 {% if user.is_authenticated %}
                     <div class="relative group">
                         <button class="hover:text-gray-300 transition-colors duration-200 flex items-center gap-2">
                             <span class="hidden sm:inline">{{ user.first_name|default:user.email|truncatechars:12 }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <!-- Dropdown Menu -->
                         <div class="absolute right-0 mt-4 w-48 bg-white text-gray-800 rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 overflow-hidden">
                             <a href="{% url 'accounts:profile' %}" class="block px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors">My Account</a>
                             <a href="{% url 'orders:my_orders' %}" class="block px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors">My Orders</a>
@@ -107,7 +186,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 
-                <!-- Brand Column -->
                 <div class="col-span-1 md:col-span-2">
                     <span class="font-serif font-bold text-2xl tracking-tight mb-4 block">{{ store.store_name }}</span>
                     <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
@@ -115,7 +193,6 @@
                     </p>
                 </div>
 
-                <!-- Links Column 1 -->
                 <div>
                     <h4 class="text-sm font-semibold tracking-wider uppercase mb-4 text-gray-300">Shop</h4>
                     <ul class="space-y-3 text-sm text-gray-400">
@@ -126,7 +203,6 @@
                     </ul>
                 </div>
 
-                <!-- Links Column 2 -->
                 <div>
                     <h4 class="text-sm font-semibold tracking-wider uppercase mb-4 text-gray-300">Support</h4>
                     <ul class="space-y-3 text-sm text-gray-400">
@@ -138,13 +214,47 @@
                 </div>
             </div>
 
-            <!-- Bottom Bar -->
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
                 <p>&copy; {% now "Y" %} {{ store.store_name }}. All rights reserved.</p>
                 <p>{{ store.address }}</p>
             </div>
         </div>
     </footer>
+
+    <!-- ═══════════ SCROLL REVEAL ENGINE ═══════════ -->
+    <script>
+        (function() {
+            function initReveal() {
+                const selectors = '.reveal, .reveal-fade, .reveal-scale';
+                const elements = document.querySelectorAll(selectors);
+                
+                if (!('IntersectionObserver' in window)) {
+                    elements.forEach(el => el.classList.add('is-visible'));
+                    return;
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.08,
+                    rootMargin: '0px 0px -60px 0px'
+                });
+
+                elements.forEach(el => observer.observe(el));
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initReveal);
+            } else {
+                initReveal();
+            }
+        })();
+    </script>
 
 </body>
 </html>
