@@ -15,19 +15,48 @@ from .models import Order, OrderItem, AbandonedCart
 # ═══════════════════════════════════════════════
 # HELPERS
 # ═══════════════════════════════════════════════
+def restore_cart(request, token):
+    """
+    Customer clicks a recovery link in their email.
+    We reload the cart items from the snapshot into their current session.
+    """
+    try:
+        abandoned = AbandonedCart.objects.get(recovery_token=token, is_converted=False)
+    except AbandonedCart.DoesNotExist:
+        messages.error(request, 'This recovery link has expired or is no longer valid.')
+        return redirect('products:list')
+
+    cart = Cart(request)
+
+    # Rebuild the cart from the snapshot
+    restored_count = 0
+    for item in abandoned.items_snapshot:
+        try:
+            variant = ProductVariant.objects.get(id=item['variant_id'])
+            if variant.stock >= item['quantity']:
+                cart.add(variant.id, item['quantity'])
+                restored_count += 1
+        except ProductVariant.DoesNotExist:
+            continue
+
+    if restored_count > 0:
+        messages.success(request, f'Welcome back! {restored_count} item(s) have been restored to your cart.')
+    else:
+        messages.warning(request, 'We couldn\'t restore your cart — some items may no longer be available.')
+
+    return redirect('orders:cart')
+
 
 def _sync_abandoned_cart(request, cart):
     """
-    Keep the AbandonedCart record in sync with the current session cart.
-    - If the cart is empty → delete any existing record for this session.
-    - Otherwise → upsert the record with current item count, subtotal, and email.
+    Save/update the AbandonedCart record with a full snapshot of the cart.
+    Enables recovery emails that show actual products + a click-to-restore link.
     """
     session_key = request.session.session_key
     if not session_key:
         request.session.create()
         session_key = request.session.session_key
 
-    # If the cart is now empty, clean up
     if cart.is_empty():
         AbandonedCart.objects.filter(
             session_key=session_key,
@@ -35,14 +64,25 @@ def _sync_abandoned_cart(request, cart):
         ).delete()
         return
 
-    # Resolve user + email
+    # Build the snapshot
+    items_snapshot = []
+    for item in cart:
+        variant = item['variant']
+        items_snapshot.append({
+            'variant_id': variant.id,
+            'product_name': variant.product.name,
+            'size': variant.size.name,
+            'color': variant.color.name,
+            'price': float(item['price']),
+            'quantity': item['quantity'],
+        })
+
     user = None
     email = ''
     if request.user.is_authenticated:
         user = request.user
         email = request.user.email
     else:
-        # Fall back to any email captured during checkout start
         email = request.session.get('checkout_email', '')
 
     AbandonedCart.objects.update_or_create(
@@ -53,10 +93,9 @@ def _sync_abandoned_cart(request, cart):
             'email': email,
             'item_count': len(cart),
             'subtotal': cart.get_subtotal(),
+            'items_snapshot': items_snapshot,
         }
     )
-
-
 # ═══════════════════════════════════════════════
 # ORDER HISTORY / TRACKING
 # ═══════════════════════════════════════════════
