@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # WebVault Apps
     'core',
+    'campaigns', 
     'products',
     'orders',
     'payments',
