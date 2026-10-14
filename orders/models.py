@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from products.models import ProductVariant
 from delivery.models import DeliveryMethod
 
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending Payment'),
@@ -15,7 +16,7 @@ class Order(models.Model):
     )
 
     order_number = models.CharField(max_length=20, unique=True, blank=True)
-    
+
     # Customer info
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -25,7 +26,9 @@ class Order(models.Model):
     state = models.CharField(max_length=100, blank=True)
 
     # Delivery
-    delivery_method = models.ForeignKey(DeliveryMethod, on_delete=models.SET_NULL, null=True, related_name='orders')
+    delivery_method = models.ForeignKey(
+        DeliveryMethod, on_delete=models.SET_NULL, null=True, related_name='orders'
+    )
     delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     # Totals
@@ -40,6 +43,13 @@ class Order(models.Model):
     # Ownership (optional — allows guest checkout)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
+    # Reminder tracking (Cycle 1)
+    payment_reminder_sent = models.BooleanField(
+        default=False,
+        help_text="Has a payment reminder been sent for this pending order?"
+    )
+    payment_reminder_sent_at = models.DateTimeField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -51,10 +61,31 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.order_number}"
 
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True)
+
+    # Snapshot of product data at time of purchase
+    product_name = models.CharField(max_length=200)
+    size_name = models.CharField(max_length=20)
+    color_name = models.CharField(max_length=50)
+
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.IntegerField(default=1)
+
+    @property
+    def line_total(self):
+        return self.price * self.quantity
+
+    def __str__(self):
+        return f"{self.product_name} x {self.quantity}"
+
+
 class AbandonedCart(models.Model):
     """
     Persistent snapshot of a customer's active cart.
-    Enables abandoned cart recovery emails.
+    Enables abandoned cart recovery emails (Cycle 1 & 2).
     """
     session_key = models.CharField(max_length=64, db_index=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -63,6 +94,17 @@ class AbandonedCart(models.Model):
     # Snapshot
     item_count = models.IntegerField(default=0)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # NEW (Cycle 2): Full JSON snapshot of cart contents
+    items_snapshot = models.JSONField(
+        default=list,
+        help_text="[{variant_id, product_name, size, color, price, quantity}]"
+    )
+
+    # NEW (Cycle 2): Unique token for the recovery link
+    recovery_token = models.UUIDField(
+        default=uuid.uuid4, unique=True, editable=False, db_index=True
+    )
 
     # State tracking
     is_converted = models.BooleanField(default=False, help_text="Cart turned into an order")
@@ -79,32 +121,3 @@ class AbandonedCart(models.Model):
 
     def __str__(self):
         return f"Cart {self.session_key[:8]}... — {self.item_count} item(s)"
-
-
-class Order(models.Model):
-    # ... existing fields ...
-    # ADD these two fields to the Order model:
-    payment_reminder_sent = models.BooleanField(
-        default=False,
-        help_text="Has a payment reminder been sent for this pending order?"
-    )
-    payment_reminder_sent_at = models.DateTimeField(null=True, blank=True)
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True)
-    
-    # Snapshot of product data at time of purchase
-    product_name = models.CharField(max_length=200)
-    size_name = models.CharField(max_length=20)
-    color_name = models.CharField(max_length=50)
-    
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.IntegerField(default=1)
-
-    @property
-    def line_total(self):
-        return self.price * self.quantity
-
-    def __str__(self):
-        return f"{self.product_name} x {self.quantity}"
