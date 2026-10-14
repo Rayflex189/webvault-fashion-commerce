@@ -1,15 +1,65 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.utils import timezone
 
 from products.models import ProductVariant
 from delivery.models import DeliveryMethod
 from core.models import StoreSettings
 from .cart import Cart
-from .models import Order, OrderItem
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from .models import Order, OrderItem, AbandonedCart
 
+
+# ═══════════════════════════════════════════════
+# HELPERS
+# ═══════════════════════════════════════════════
+
+def _sync_abandoned_cart(request, cart):
+    """
+    Keep the AbandonedCart record in sync with the current session cart.
+    - If the cart is empty → delete any existing record for this session.
+    - Otherwise → upsert the record with current item count, subtotal, and email.
+    """
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
+        session_key = request.session.session_key
+
+    # If the cart is now empty, clean up
+    if cart.is_empty():
+        AbandonedCart.objects.filter(
+            session_key=session_key,
+            is_converted=False
+        ).delete()
+        return
+
+    # Resolve user + email
+    user = None
+    email = ''
+    if request.user.is_authenticated:
+        user = request.user
+        email = request.user.email
+    else:
+        # Fall back to any email captured during checkout start
+        email = request.session.get('checkout_email', '')
+
+    AbandonedCart.objects.update_or_create(
+        session_key=session_key,
+        is_converted=False,
+        defaults={
+            'user': user,
+            'email': email,
+            'item_count': len(cart),
+            'subtotal': cart.get_subtotal(),
+        }
+    )
+
+
+# ═══════════════════════════════════════════════
+# ORDER HISTORY / TRACKING
+# ═══════════════════════════════════════════════
 
 @login_required
 def my_orders(request):
@@ -25,15 +75,12 @@ def order_detail(request, order_number):
     """View a single order. Only buyer (logged in) or via tracking can see details."""
     order = get_object_or_404(Order, order_number=order_number)
 
-    # Security: only allow access if user owns the order OR email matches
     is_owner = (
         request.user.is_authenticated and
         (order.user == request.user or order.email == request.user.email)
     )
 
     if not is_owner:
-        # If not logged in, we allow view-only via tracking link
-        # but we don't show sensitive info (only status timeline)
         return render(request, 'orders/order_public.html', {'order': order})
 
     return render(request, 'orders/order_detail.html', {'order': order})
@@ -56,6 +103,10 @@ def track_order(request):
     return render(request, 'orders/track.html', {'order': order, 'error': error})
 
 
+# ═══════════════════════════════════════════════
+# CART
+# ═══════════════════════════════════════════════
+
 def cart_detail(request):
     cart = Cart(request)
     return render(request, 'orders/cart.html', {'cart': cart})
@@ -71,6 +122,10 @@ def cart_add(request, variant_id):
 
     quantity = int(request.POST.get('quantity', 1))
     cart.add(variant.id, quantity)
+
+    # ── NEW: Track this cart for recovery emails ──
+    _sync_abandoned_cart(request, cart)
+
     messages.success(request, f'Added {variant.product.name} to cart.')
     return redirect('orders:cart')
 
@@ -79,15 +134,27 @@ def cart_update(request, variant_id):
     cart = Cart(request)
     quantity = int(request.POST.get('quantity', 1))
     cart.update(variant_id, quantity)
+
+    # ── NEW: Keep snapshot up to date ──
+    _sync_abandoned_cart(request, cart)
+
     return redirect('orders:cart')
 
 
 def cart_remove(request, variant_id):
     cart = Cart(request)
     cart.remove(variant_id)
+
+    # ── NEW: If cart is now empty, this deletes the snapshot ──
+    _sync_abandoned_cart(request, cart)
+
     messages.success(request, 'Item removed from cart.')
     return redirect('orders:cart')
 
+
+# ═══════════════════════════════════════════════
+# CHECKOUT
+# ═══════════════════════════════════════════════
 
 def checkout(request):
     cart = Cart(request)
@@ -100,8 +167,13 @@ def checkout(request):
     store = StoreSettings.load()
 
     if request.method == 'POST':
+        # ── NEW: Capture email so abandoned carts can be emailed if they don't finish ──
+        request.session['checkout_email'] = request.POST.get('email', '').strip().lower()
+
         delivery_method_id = request.POST.get('delivery_method')
-        delivery_method = get_object_or_404(DeliveryMethod, id=delivery_method_id, is_active=True)
+        delivery_method = get_object_or_404(
+            DeliveryMethod, id=delivery_method_id, is_active=True
+        )
 
         with transaction.atomic():
             subtotal = cart.get_subtotal()
@@ -136,9 +208,18 @@ def checkout(request):
                     quantity=item['quantity'],
                 )
 
-            # NOTE: Paystack goes here (Option D). For now, we go to the confirmation page.
+            # ── NEW: Mark this session's abandoned cart as converted ──
+            session_key = request.session.session_key
+            AbandonedCart.objects.filter(
+                session_key=session_key,
+                is_converted=False
+            ).update(is_converted=True)
+
             cart.clear()
-            return redirect('orders:order_confirmation', order_number=order.order_number)
+            return redirect(
+                'orders:order_confirmation',
+                order_number=order.order_number
+            )
 
     context = {
         'cart': cart,
@@ -147,6 +228,10 @@ def checkout(request):
     }
     return render(request, 'orders/checkout.html', context)
 
+
+# ═══════════════════════════════════════════════
+# ORDER CONFIRMATION
+# ═══════════════════════════════════════════════
 
 def order_confirmation(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
