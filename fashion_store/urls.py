@@ -8,9 +8,11 @@ from core.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('', include('orders.urls')), # <--- Add this
-    path('account/', include('accounts.urls')),  # <-- Add this
-    path('shop/', include('products.urls')), # <--- Add this
+    path('shop/', include('products.urls')),
+    path('', include('orders.urls')),
+    path('payments/', include('payments.urls')),
+    path('account/', include('accounts.urls')),
+    path('campaigns/', include('campaigns.urls')),  # <-- ADD THIS LINE
 ]
 
 if settings.DEBUG:
