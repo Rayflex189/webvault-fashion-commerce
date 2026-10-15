@@ -1,0 +1,27 @@
+name: Run Email Campaigns
+
+on:
+  schedule:
+    # Runs at minute 0 of every hour (UTC)
+    - cron: '0 * * * *'
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  run-campaigns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger WebVault campaign engine
+        run: |
+          echo "🚀 Triggering campaigns at $(date -u)"
+          RESPONSE=$(curl -s -X POST \
+            "https://webvaultshopfront.pythonanywhere.com/campaigns/run-webhook/?secret=${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP_STATUS:%{http_code}")
+          echo "$RESPONSE"
+          HTTP_STATUS=$(echo "$RESPONSE" | grep -o 'HTTP_STATUS:[0-9]*' | cut -d: -f2)
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "❌ Campaign trigger failed with status $HTTP_STATUS"
+            exit 1
+          fi
+          echo "✅ Campaigns triggered successfully"
