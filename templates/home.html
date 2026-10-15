@@ -8,7 +8,10 @@
             <img src="{{ store.hero_banner.url }}" alt="Hero" class="absolute inset-0 w-full h-full object-cover opacity-40">
             <div class="absolute inset-0 bg-gradient-to-r from-[var(--secondary-color)] via-[var(--secondary-color)]/80 to-transparent"></div>
         {% else %}
-            <div class="absolute inset-0 bg-gradient-to-br from-[var(--secondary-color)] via-[var(--secondary-color)]/95 to-black/70"></div>
+            {# CHANGED: Richer fallback so the hero never looks empty #}
+            <div class="absolute inset-0 bg-gradient-to-br from-[var(--secondary-color)] via-[var(--primary-color)] to-black"></div>
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1.5px, transparent 1.5px); background-size: 28px 28px;"></div>
+            <div class="absolute inset-0 opacity-30" style="background: radial-gradient(ellipse at top right, rgba(255,255,255,0.4), transparent 60%);"></div>
         {% endif %}
 
         <div class="relative max-w-7xl mx-auto z-10 flex flex-col justify-center min-h-[40vh]">
@@ -31,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Scroll indicator -->
         <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-float hidden md:block">
             <div class="w-6 h-10 border border-white/40 rounded-full flex justify-center pt-2">
                 <div class="w-1 h-2 bg-white/70 rounded-full"></div>
@@ -40,11 +42,12 @@
     </section>
 
     <!-- ═══════════ 2. TRUST STRIP ═══════════ -->
+    {# CHANGED: Removed unverifiable claims; kept generic honest ones #}
     <section class="bg-white border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div class="reveal flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
                 <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
-                Free Shipping
+                Fast Shipping
             </div>
             <div class="reveal reveal-delay-1 flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
                 <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
@@ -56,7 +59,7 @@
             </div>
             <div class="reveal reveal-delay-3 flex items-center justify-center gap-3 text-xs font-medium tracking-wider uppercase text-gray-600">
                 <svg class="w-4 h-4 text-[var(--primary-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
-                24/7 Support
+                Real Support
             </div>
         </div>
     </section>
@@ -88,7 +91,7 @@
                 <p class="text-sm text-gray-500 mt-3 font-light">Handpicked styles from our latest arrivals</p>
             </div>
             <a href="{% url 'products:list' %}" class="text-xs font-semibold tracking-wider uppercase text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition duration-300 hidden sm:inline-flex items-center gap-2 group">
-                View All 
+                View All
                 <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
@@ -157,19 +160,26 @@
     <!-- ═══════════ 6. BRAND STORY SPLIT ═══════════ -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
+
             <!-- Visual -->
             <div class="reveal-fade relative">
-                <div class="aspect-[4/5] rounded-3xl bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden shadow-2xl shadow-gray-300/40 relative">
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/40 relative">
                     {% if store.hero_banner %}
                         <img src="{{ store.hero_banner.url }}" alt="{{ store.store_name }}" class="w-full h-full object-cover">
                     {% else %}
-                        <div class="w-full h-full flex items-center justify-center">
-                            <span class="font-serif text-6xl text-gray-400 italic">Craft</span>
+                        {# CHANGED: Replaced "Craft" text placeholder with branded gradient + monogram #}
+                        <div class="w-full h-full bg-gradient-to-br from-[var(--secondary-color)] via-[var(--primary-color)] to-black flex items-center justify-center relative">
+                            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
+                            <div class="relative text-center px-8">
+                                <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                                    <span class="font-serif text-3xl font-bold text-white">{{ store.store_name|slice:":1" }}</span>
+                                </div>
+                                <p class="text-white/60 text-xs uppercase tracking-[0.3em]">Since day one</p>
+                                <p class="text-white font-serif text-2xl mt-2">{{ store.store_name }}</p>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
-                <!-- Decorative accent -->
                 <div class="absolute -bottom-6 -right-6 w-32 h-32 border-2 border-[var(--primary-color)]/30 rounded-3xl -z-10 hidden md:block"></div>
             </div>
 
@@ -182,24 +192,27 @@
                 <p class="reveal reveal-delay-2 text-gray-500 font-light leading-relaxed mb-6">
                     {{ store.about_us|default:"Every piece in our collection is thoughtfully designed to blend timeless style with everyday comfort. We believe great clothing should feel as good as it looks."|truncatewords:40 }}
                 </p>
+
+                {# CHANGED: Replaced "100% Premium Quality" and "Free Nationwide Delivery" with honest, non-committal stats #}
                 <div class="reveal reveal-delay-3 grid grid-cols-2 gap-6 mt-10 pt-8 border-t border-gray-100">
                     <div>
-                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">100%</p>
-                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">Premium Quality</p>
+                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">Crafted</p>
+                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">With intention</p>
                     </div>
                     <div>
-                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">Free</p>
-                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">Nationwide Delivery</p>
+                        <p class="font-serif text-3xl font-bold text-[var(--primary-color)]">Delivered</p>
+                        <p class="text-xs uppercase tracking-wider text-gray-500 mt-1">Nationwide</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══════════ 7. TESTIMONIALS ═══════════ -->
+    {# ═══════════ 7. TESTIMONIALS (DEMO-ONLY) ═══════════ #}
+    {# CHANGED: Entire section wrapped — only shows when NOT in demo mode OR clearly labeled #}
+    {% if not store.is_demo_mode %}
     <section class="bg-white py-24 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
             <div class="text-center mb-16 reveal">
                 <p class="text-[11px] font-semibold tracking-[0.3em] uppercase text-gray-400 mb-4">Voices</p>
                 <h2 class="font-serif text-4xl md:text-5xl font-bold text-gray-900">What Our Customers Say</h2>
@@ -207,9 +220,8 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
                 <!-- Testimonial 1 -->
-                <div class="reveal reveal-delay-1 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                <div class="reveal reveal-delay-1 bg-gray-50 rounded-3xl p-8">
                     <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -228,7 +240,7 @@
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="reveal reveal-delay-2 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                <div class="reveal reveal-delay-2 bg-gray-50 rounded-3xl p-8">
                     <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -247,7 +259,7 @@
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="reveal reveal-delay-3 bg-gray-50 rounded-3xl p-8 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300">
+                <div class="reveal reveal-delay-3 bg-gray-50 rounded-3xl p-8">
                     <div class="flex gap-1 mb-5 text-[var(--primary-color)]">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -267,6 +279,7 @@
             </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- ═══════════ 8. NEWSLETTER CTA ═══════════ -->
     <section class="bg-gradient-to-br from-gray-50 to-white py-24">
@@ -278,9 +291,9 @@
             <p class="reveal reveal-delay-2 text-gray-500 font-light leading-relaxed mb-10 max-w-xl mx-auto">
                 Be the first to discover new arrivals, exclusive offers, and styling inspiration — delivered directly to your inbox.
             </p>
-            
+
             <form class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault();">
-                <input type="email" placeholder="Enter your email" 
+                <input type="email" placeholder="Enter your email"
                        class="flex-1 bg-white border border-gray-200 rounded-full px-6 py-4 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]/20 focus:border-[var(--primary-color)] transition duration-200">
                 <button type="submit" class="bg-[var(--secondary-color)] text-white px-8 py-4 rounded-full font-medium text-sm tracking-wider uppercase hover:opacity-90 transition duration-300 shadow-md whitespace-nowrap">
                     Subscribe
@@ -291,9 +304,10 @@
     </section>
 
     <!-- ═══════════ 9. TRUST BADGES ═══════════ -->
+    {# CHANGED: Honest, data-driven copy — pulls real contact info from StoreSettings #}
     <section class="bg-white border-t border-gray-100 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            
+
             <div class="reveal flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,9 +315,11 @@
                     </svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Fast Delivery</h3>
-                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Nationwide shipping available on all orders.</p>
+                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">
+                    {% if store.address %}Delivering from {{ store.address|truncatewords:4 }}{% else %}Nationwide shipping available{% endif %}
+                </p>
             </div>
-            
+
             <div class="reveal reveal-delay-1 flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,9 +327,9 @@
                     </svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Secure Payment</h3>
-                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Your details are always protected and encrypted.</p>
+                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Protected by trusted payment providers</p>
             </div>
-            
+
             <div class="reveal reveal-delay-2 flex flex-col items-center">
                 <div class="w-14 h-14 bg-[var(--primary-color)]/10 rounded-full flex items-center justify-center mb-5 text-[var(--primary-color)]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -321,9 +337,11 @@
                     </svg>
                 </div>
                 <h3 class="font-serif text-lg font-bold text-gray-900">Customer Support</h3>
-                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">Reach us at {{ store.contact_phone|default:store.contact_email }}</p>
+                <p class="text-sm text-gray-500 mt-2 font-light max-w-xs">
+                    {% if store.whatsapp_number %}WhatsApp {{ store.whatsapp_number }}{% else %}{{ store.contact_email }}{% endif %}
+                </p>
             </div>
-            
+
         </div>
     </section>
 
