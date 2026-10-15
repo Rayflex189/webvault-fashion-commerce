@@ -19,7 +19,11 @@ class StoreSettings(models.Model):
     # BRANDING
     # ─────────────────────────────────────────
     store_name = models.CharField(max_length=200, default="WebVault Fashion Store")
-    logo = models.ImageField(upload_to='branding/', blank=True, null=True)
+    logo = models.ImageField(upload_to='branding/', blank=True, null=True) 
+    is_demo_mode = models.BooleanField(
+    default=True,
+    help_text="Enable to hide placeholder content (testimonials, etc.) until real data is added."
+    )
     favicon = models.ImageField(upload_to='branding/', blank=True, null=True)
     primary_color = models.CharField(
         max_length=7, default="#4F46E5",
