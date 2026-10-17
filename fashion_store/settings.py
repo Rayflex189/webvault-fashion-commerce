@@ -4,6 +4,7 @@ Django settings for fashion_store project.
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # ─────────────────────────────────────────
 # ENVIRONMENT VARIABLES (must be first!)
@@ -94,12 +95,20 @@ WSGI_APPLICATION = "fashion_store.wsgi.application"
 # ─────────────────────────────────────────
 # DATABASE
 # ─────────────────────────────────────────
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL)
+    }
 
 
 # ─────────────────────────────────────────
