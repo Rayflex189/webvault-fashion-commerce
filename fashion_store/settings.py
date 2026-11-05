@@ -27,15 +27,17 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.app.github.dev',
+CSRF_TRUSTED_ORIGINS = [# Only use for testing! Remember to delete after testing
     'https://webvaultfashionstore.de2.netrun.io',
+    'https://*.netrun.io',  # Wildcard subdomain
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
     'https://127.0.0.1:8000',
 ]
 
+# Tell Django to trust the protocol header sent by the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # ─────────────────────────────────────────
 # APPLICATIONS
