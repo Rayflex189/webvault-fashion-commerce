@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.app.github.dev',
-    'https://*.githubpreview.dev',
+    'https://webvaultfashionstore.de2.netrun.io',
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
